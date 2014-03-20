@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ASync Test</h2>
+
+@Ajax.ActionLink("This is a test", "ASync", new AjaxOptions {  HttpMethod = "POST",
+                                                                InsertionMode = InsertionMode.Replace,
+                                                                UpdateTargetId = "MainChart" })
+
+
+<!--using (Ajax.BeginForm("Test", "Test", new AjaxOptions{ UpdateTargetId = "MainChart" })) {
+ 
+<input id="input1" type="text" /> <input id="input2" type="text" />
+ 
+<input id="submit" type="submit" value="save" />
+} -->
+
+<div id="MainChart">
+    Test
+
+</div>
+                                                                

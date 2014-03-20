@@ -36,6 +36,13 @@ namespace DifferentiallyPrivate
                 url: "charting",
                 defaults: new { controller = "Home", action = "Charting" }
             );
+
+            routes.MapRoute(
+                name: "ASync",
+                url: "async",
+                defaults: new { controller = "Home", action = "ASync", v1 = UrlParameter.Optional, v2 = UrlParameter.Optional }
+            );
+
         }
     }
 }
