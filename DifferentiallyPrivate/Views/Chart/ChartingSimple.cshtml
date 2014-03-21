@@ -1,0 +1,24 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Simple Charting</h2>
+
+<!--Ajax.ActionLink("This is a test", "ChartingSimple", new AjaxOptions {  HttpMethod = "POST",
+                                                                InsertionMode = InsertionMode.Replace,
+                                                                UpdateTargetId = "MainChart" })-->
+
+@using (Ajax.BeginForm("ChartingSimple", "Chart", new AjaxOptions{ UpdateTargetId = "MainChart" })) {
+    <label for="iterations">    Iterations:</label>
+    <input id="iterations" type="text" name="iterations" maxlength="5" size="5" />
+    <label for="epsilon">   Epsilon:</label>
+    <input id="epsilon" type="text" name="epsilon" maxlength="3" size="3" />
+    <label for="bins">  # of Bins:</label>
+    <input id="bins" type="text" name="bins" maxlength="4" size="4" />
+ 
+    <input id="submit" type="submit" value="Go" />
+} 
+
+<div id="MainChart">
+</div>
+                                                                
