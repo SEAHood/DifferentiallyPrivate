@@ -43,6 +43,12 @@ namespace DifferentiallyPrivate
                 defaults: new { controller = "Home", action = "ASync", v1 = UrlParameter.Optional, v2 = UrlParameter.Optional }
             );
 
+            routes.MapRoute(
+                name: "Test",
+                url: "async",
+                defaults: new { controller = "Home", action = "Test" }
+            );
+
         }
     }
 }

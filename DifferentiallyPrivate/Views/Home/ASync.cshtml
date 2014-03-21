@@ -8,13 +8,12 @@
                                                                 InsertionMode = InsertionMode.Replace,
                                                                 UpdateTargetId = "MainChart" })
 
-
-<!--using (Ajax.BeginForm("Test", "Test", new AjaxOptions{ UpdateTargetId = "MainChart" })) {
+@using (Ajax.BeginForm("Test", "Home", new AjaxOptions{ UpdateTargetId = "MainChart" })) {
  
-<input id="input1" type="text" /> <input id="input2" type="text" />
+<input id="input1" type="text" name="input1" /><input id="input2" type="text" name="input2" />
  
 <input id="submit" type="submit" value="save" />
-} -->
+} 
 
 <div id="MainChart">
     Test
