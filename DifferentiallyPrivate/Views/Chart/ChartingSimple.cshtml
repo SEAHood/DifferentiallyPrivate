@@ -8,13 +8,17 @@
                                                                 InsertionMode = InsertionMode.Replace,
                                                                 UpdateTargetId = "MainChart" })-->
 
+
+
 @using (Ajax.BeginForm("ChartingSimple", "Chart", new AjaxOptions{ UpdateTargetId = "MainChart" })) {
-    <label for="iterations">    Iterations:</label>
-    <input id="iterations" type="text" name="iterations" maxlength="5" size="5" />
-    <label for="epsilon">   Epsilon:</label>
-    <input id="epsilon" type="text" name="epsilon" maxlength="3" size="3" />
-    <label for="bins">  # of Bins:</label>
-    <input id="bins" type="text" name="bins" maxlength="4" size="4" />
+    <label for="iterations" class="formLabel">    Iterations:</label>
+        <input id="iterations" type="text" name="iterations" maxlength="5" size="5" />
+    <label for="epsilon" class="formLabel">   Epsilon:</label>
+        <input id="epsilon" type="text" name="epsilon" maxlength="3" size="3" />
+    <label for="bins" class="formLabel">  # of Bins:</label>
+        <input id="bins" type="text" name="bins" maxlength="4" size="4" />
+    <label for="data" class="formLabel">  Data list (comma-delimited):</label>
+        <input id="data" type="text" name="data" size="50" value="1,2,3,4,5,6,7,8,9,10" />
  
     <input id="submit" type="submit" value="Go" />
 } 

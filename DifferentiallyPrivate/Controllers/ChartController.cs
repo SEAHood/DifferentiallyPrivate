@@ -30,11 +30,22 @@ namespace DifferentiallyPrivate.Controllers
                     double[] iList = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
                     int iterations = Int32.Parse(Request.Form["iterations"].ToString()); 
                     double epsilon = Double.Parse(Request.Form["epsilon"].ToString()); 
-                    int binCount = Int32.Parse(Request.Form["bins"].ToString()); 
+                    int binCount = Int32.Parse(Request.Form["bins"].ToString());
+                    string data = Request.Form["data"].ToString();
 
-                    ChartModels cm = new ChartModels();
+                    data = data.Replace(" ", "");
 
-                    DotNet.Highcharts.Highcharts chart = cm.Begin(iList, iterations, epsilon, binCount);
+                    string[] tokenisedData = data.Split(',');
+                    double[] customList = new double[tokenisedData.Count()];
+
+                    for (int i = 0; i < tokenisedData.Count(); i++)
+                    {
+                        customList[i] = Double.Parse(tokenisedData[i]);
+                    }
+
+                    ChartModels cm = new ChartModels(ChartTypes.Column);
+
+                    DotNet.Highcharts.Highcharts chart = cm.FillChart(customList, iterations, epsilon, binCount);
                     
                     return PartialView("_Chart", chart);
                 }

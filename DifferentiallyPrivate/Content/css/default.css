@@ -112,3 +112,7 @@ img {
 	padding-top:10px;
 	vertical-align:top;
 }
+
+.formLabel {
+    font-size: small;
+}

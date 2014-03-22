@@ -13,12 +13,13 @@ namespace DifferentiallyPrivate.Services
         public double epsilon { get; set; }
         public int binCount { get; set; }
         
-        public double[] DoAverageAnalysis()
+        
+        //RETURNS: object[<value>][<#calculated>]
+        public object[][] DoAverageAnalysis()
         {
             double low = iData[0];                              //-------
             double high = iData[iData.Count() - 1];             //MAKE MORE GENERAL - NOT JUST DOUBLE
             int[] histoCount = new int[binCount];
-            //SET UP CHART LOWS/HIGHS/INTERVAL
             double[] averages = new double[iterations];
 
             for (int i = 0; i < iterations; i++)
@@ -29,19 +30,27 @@ namespace DifferentiallyPrivate.Services
                 averages[i] = pinqAvgNew;
             }
 
-            /*double chartSizeX = high - low; //Size of chart
+            double chartSizeX = high - low;
             double groupSize = chartSizeX / (double)binCount;
 
+            object[] yAxis = new object[Int32.Parse(binCount.ToString()) + 1];
+            string[] xAxis = new string[Int32.Parse(binCount.ToString()) + 1];
+
+            double hiJ = 0;
 
             for (double i = low, j = 0; i < high; i += groupSize, j++)
             {
                 var groupList = averages.Where(x => x < i + groupSize && x > i);
                 int valuesFound = groupList.Count();
-                //chart1.Series[0].Points.AddXY(i, valuesFoundEps1);                    //valuesFound => Y axis for X = i
-                //PINQChart.Series[0].Points.AddXY(i, valuesFoundEps10);
-            }*/
-            //MOVED TO MODEL
-            return averages;
+
+                if (hiJ < j)
+                    hiJ = j;
+
+                xAxis[(Int32)j] = i.ToString();
+                yAxis[(Int32)j] = valuesFound;
+            }
+
+            return new object[][] { xAxis, yAxis };
         }
     }
 }
