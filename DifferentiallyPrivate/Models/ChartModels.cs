@@ -25,13 +25,22 @@ namespace DifferentiallyPrivate.Models
                     });
         }
 
-        public DotNet.Highcharts.Highcharts FillChart(double[] data, int iterations, double epsilon, int binCount)
+        public DotNet.Highcharts.Highcharts FillChart(string queryType, double[] data, int iterations, double epsilon, int binCount)
         {
             data = data.OrderBy(x => x).ToArray();
 
             PINQAnalyser PINQA = new PINQAnalyser() { iData = data, iterations = iterations, epsilon = epsilon, binCount = binCount };
 
-            object[][] averages = PINQA.DoAverageAnalysis();
+
+            object[][] averages;
+
+            if (queryType == "Average")
+                averages = PINQA.DoAverageAnalysis();
+            else if (queryType == "Median")
+                averages = PINQA.DoMedianAnalysis();
+            else
+                averages = PINQA.DoAverageAnalysis();
+
             object[] xAxis = averages[0];
             object[] yAxis = averages[1];
 
@@ -49,10 +58,13 @@ namespace DifferentiallyPrivate.Models
                         Data = new DotNet.Highcharts.Helpers.Data(yAxis)
                     });
             chart.SetCredits(new DotNet.Highcharts.Options.Credits() { Text = "Simple Chart" });
-            chart.SetTitle(new Title() { Text = "PINQ Averages (" + iterations + " iterations; " + 
-                                                                    binCount + " bins; " + 
-                                                                    "ε = " + epsilon + ")" });
-            
+
+            chart.SetTitle(new Title()
+            {
+                Text = "PINQ " + queryType + "s (" + iterations + " iterations; " +
+                                            binCount + " bins; " +
+                                            "ε = " + epsilon + ")"
+            });
   
             
             return chart;

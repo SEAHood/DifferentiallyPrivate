@@ -27,9 +27,68 @@ namespace DifferentiallyPrivate.Controllers
             {
                 if (Request.Form.Count != 1)
                 {
+                    if (Request.Form["type"].ToString() == "Average")
+                    {
+                        double[] iList = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+                        //Needs validation
+                        int iterations = Int32.Parse(Request.Form["iterations"].ToString());
+                        double epsilon = Double.Parse(Request.Form["epsilon"].ToString());
+                        int binCount = Int32.Parse(Request.Form["bins"].ToString());
+                        string data = Request.Form["data"].ToString();
+                        string type = Request.Form["type"].ToString();
+
+                        data = data.Replace(" ", "");
+
+                        string[] tokenisedData = data.Split(',');
+                        double[] customList = new double[tokenisedData.Count()];
+
+                        for (int i = 0; i < tokenisedData.Count(); i++)
+                        {
+                            customList[i] = Double.Parse(tokenisedData[i]);
+                        }
+
+                        ChartModels cm = new ChartModels(ChartTypes.Column);
+
+                        DotNet.Highcharts.Highcharts chart = cm.FillChart(type, customList, iterations, epsilon, binCount);
+
+                        return PartialView("_Chart", chart);
+                    }
+                    else
+                    {
+                        double[] iList = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+                        //Needs validation
+                        int iterations = Int32.Parse(Request.Form["iterations"].ToString());
+                        double epsilon = Double.Parse(Request.Form["epsilon"].ToString());
+                        int binCount = Int32.Parse(Request.Form["bins"].ToString());
+                        string data = Request.Form["data"].ToString();
+                        string type = Request.Form["type"].ToString();
+
+                        data = data.Replace(" ", "");
+
+                        string[] tokenisedData = data.Split(',');
+                        double[] customList = new double[tokenisedData.Count()];
+
+                        for (int i = 0; i < tokenisedData.Count(); i++)
+                        {
+                            customList[i] = Double.Parse(tokenisedData[i]);
+                        }
+
+                        ChartModels cm = new ChartModels(ChartTypes.Column);
+
+                        DotNet.Highcharts.Highcharts chart = cm.FillChart(type, customList, iterations, epsilon, binCount);
+
+                        return PartialView("_Chart", chart);
+                    }
+                }
+                else
+                {
                     double[] iList = new double[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-                    int iterations = Int32.Parse(Request.Form["iterations"].ToString()); 
-                    double epsilon = Double.Parse(Request.Form["epsilon"].ToString()); 
+
+                    //Needs validation
+                    int iterations = Int32.Parse(Request.Form["iterations"].ToString());
+                    double epsilon = Double.Parse(Request.Form["epsilon"].ToString());
                     int binCount = Int32.Parse(Request.Form["bins"].ToString());
                     string data = Request.Form["data"].ToString();
 
@@ -45,30 +104,7 @@ namespace DifferentiallyPrivate.Controllers
 
                     ChartModels cm = new ChartModels(ChartTypes.Column);
 
-                    DotNet.Highcharts.Highcharts chart = cm.FillChart(customList, iterations, epsilon, binCount);
-                    
-                    return PartialView("_Chart", chart);
-                }
-                else
-                {
-                    //User-defined list
-                    Thread.Sleep(3000);
-                    //var c = Int32.Parse(Request.Form["input1"].ToString());
-                    //var d = Int32.Parse(Request.Form["input2"].ToString());
-                    DotNet.Highcharts.Highcharts chart = new DotNet.Highcharts.Highcharts("chart")
-                           .InitChart(new Chart
-                           {
-                               DefaultSeriesType = ChartTypes.Column
-                           })
-                           .SetXAxis(new DotNet.Highcharts.Options.XAxis
-                           {
-                               Categories = new[] { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" }
-                           })
-                           .SetSeries(new DotNet.Highcharts.Options.Series
-                           {
-                               Data = new DotNet.Highcharts.Helpers.Data(new object[] { 1,2,3,4,5,6,7,8,9,10 })
-                           });
-                    chart.SetCredits(new DotNet.Highcharts.Options.Credits() { Text = "Simple Chart" });
+                    DotNet.Highcharts.Highcharts chart = cm.FillChart("med", customList, iterations, epsilon, binCount);
 
                     return PartialView("_Chart", chart);
                 }
