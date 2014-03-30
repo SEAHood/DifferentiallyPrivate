@@ -18,17 +18,25 @@
 
 	<div id="header">
 	<a href="/"><img src="~/Content/img/dp.png"/></a>
-	<a href="~/whatis">what is differential privacy?</a>
-	<a href="~/charting">charting</a>
-	<a href="~/howto">how to</a>
+    @if (Request.IsAuthenticated)
+    {
+        <a href="~/whatis">about</a>
+        <a href="~/charting">charting</a>
+        <a href="~/howto">how to</a>
+        <a href="~/logout">logout</a>
+    }
+    else
+    {
+        <a href="~/login">login</a>
+    }    
 	</div>
 	
 	<div id="content">
-        @RenderBody()
+            @RenderBody()
 	</div>
   
 	<div id="footer">
-	website by me. email: me@samhood.net
+	2014
 	</div>
     
 </div>

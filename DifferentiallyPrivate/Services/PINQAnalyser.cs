@@ -9,10 +9,10 @@ namespace DifferentiallyPrivate.Services
     public class PINQAnalyser
     {
         public double[] iData { get; set; }
+        public double[][] iDataClustered { get; set; }
         public int iterations { get; set; }
         public double epsilon { get; set; }
         public int binCount { get; set; }
-        
         
         //RETURNS: object[<value>][<#calculated>]
         public object[][] DoAverageAnalysis()
@@ -53,6 +53,7 @@ namespace DifferentiallyPrivate.Services
             return new object[][] { xAxis, yAxis };
         }
 
+        //RETURNS: object[<value>][<#calculated>]
         public object[][] DoMedianAnalysis()
         {
             double low = iData[0];                              //-------

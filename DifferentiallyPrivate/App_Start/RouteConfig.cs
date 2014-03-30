@@ -20,6 +20,18 @@ namespace DifferentiallyPrivate
             );
 
             routes.MapRoute(
+                name: "Login",
+                url: "login",
+                defaults: new { controller = "Home", action = "Login" }
+            );
+
+            routes.MapRoute(
+                name: "Logout",
+                url: "logout",
+                defaults: new { controller = "Home", action = "Logout" }
+            );
+
+            routes.MapRoute(
                 name: "WhatIs",
                 url: "whatis",
                 defaults: new { controller = "Home", action = "WhatIs" }
