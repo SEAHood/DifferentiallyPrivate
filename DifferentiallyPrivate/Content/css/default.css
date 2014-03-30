@@ -8,8 +8,8 @@ body {
 
 
 h3{
-	margin-top:30px;
-	margin-bottom:2px;
+	margin-top:0;
+	margin-bottom:0;
 }
 
 h4 {
@@ -48,6 +48,7 @@ a:hover {
 
 #header {
 	width: 100%;
+    position:relative;
 }
 
 #header a {
@@ -69,33 +70,55 @@ a:hover {
 	font-size:small;
 }
 
-#header img, a {
+#header img {
 	vertical-align:middle;
 	width:30%;
 	margin-right:5%;
 }
 
+#nav {
+    float:right;
+    text-align:right;
+    position:absolute;
+    right:0;
+    top:40%;
+    width:50%;
+}
+
+#nav a {
+    margin-right:10%;
+}
 
 #content {
+    background-color:white;
+    border-radius:10px;
+    clear:both;
 	max-height:450px;
 	overflow-y: scroll;
 	margin-top:0;
-	padding-left:10px;
+	padding-left:20px;
 	padding-right:25px;
 	width: 100%;
+    padding-bottom:20px;
+    padding-top:20px;
+    box-shadow: inset 0 0 5px #818181;
 }
 
 #content::-webkit-scrollbar {
-    width: 0.1em;
+    width: 0.7em;
 }
  
 #content::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0);
+    border-radius:5px;
+    background-color: white;
+    box-shadow: inset 0 0 4px #818181;
 }
  
 #content::-webkit-scrollbar-thumb {
-  background-color: grey;
-  outline: 1px solid slategrey;
+    box-shadow: inset 0 0 6px grey;
+    width:0.7em;
+    border-radius:5px;
 }
 
 img {

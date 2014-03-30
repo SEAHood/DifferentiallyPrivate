@@ -8,8 +8,6 @@
 {
     @Html.ValidationSummary(true, "Login failed. Check your login details.");
     <div>
-        <fieldset>
-            <legend>Login</legend>
             <div>
                 @Html.LabelFor(u => u.UserName)
             </div>
@@ -25,6 +23,5 @@
                 @Html.ValidationMessageFor(u => u.Password)
             </div>
             <input type="submit" value="Log In" />
-        </fieldset>
     </div>
 }

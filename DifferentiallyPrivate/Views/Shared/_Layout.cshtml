@@ -18,18 +18,20 @@
 
 	<div id="header">
 	<a href="/"><img src="~/Content/img/dp.png"/></a>
-    @if (Request.IsAuthenticated)
-    {
-        <a href="~/whatis">about</a>
-        <a href="~/charting">charting</a>
-        <a href="~/howto">how to</a>
-        <a href="~/logout">logout</a>
-    }
-    else
-    {
-        <a href="~/login">login</a>
-    }    
-	</div>
+        <div id="nav">
+            @if (Request.IsAuthenticated)
+            {
+                <a href="~/whatis">about</a>
+                <a href="~/charting">charting</a>
+                <a href="~/howto">how to</a>
+                <a href="~/logout">logout</a>
+            }
+            else
+            {
+                <a href="~/login">login</a>
+            }    
+	        </div>
+        </div>
 	
 	<div id="content">
             @RenderBody()
