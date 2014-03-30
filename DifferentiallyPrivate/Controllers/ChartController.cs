@@ -48,7 +48,7 @@ namespace DifferentiallyPrivate.Controllers
                             customList[i] = Double.Parse(tokenisedData[i]);
                         }
 
-                        ChartModels cm = new ChartModels(ChartTypes.Column);
+                        ChartModel cm = new ChartModel(ChartTypes.Column);
 
                         DotNet.Highcharts.Highcharts chart = cm.FillChart(type, customList, iterations, epsilon, binCount);
 
@@ -75,7 +75,7 @@ namespace DifferentiallyPrivate.Controllers
                             customList[i] = Double.Parse(tokenisedData[i]);
                         }
 
-                        ChartModels cm = new ChartModels(ChartTypes.Column);
+                        ChartModel cm = new ChartModel(ChartTypes.Column);
 
                         DotNet.Highcharts.Highcharts chart = cm.FillChart(type, customList, iterations, epsilon, binCount);
 
@@ -102,7 +102,7 @@ namespace DifferentiallyPrivate.Controllers
                         customList[i] = Double.Parse(tokenisedData[i]);
                     }
 
-                    ChartModels cm = new ChartModels(ChartTypes.Column);
+                    ChartModel cm = new ChartModel(ChartTypes.Column);
 
                     DotNet.Highcharts.Highcharts chart = cm.FillChart("med", customList, iterations, epsilon, binCount);
 

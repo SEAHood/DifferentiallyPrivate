@@ -3,18 +3,36 @@ using DotNet.Highcharts.Enums;
 using DotNet.Highcharts.Options;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
 namespace DifferentiallyPrivate.Models
 {
-    public class ChartModels
+    public class ChartModel
     {
         public DotNet.Highcharts.Highcharts chart;
 
+        /*public string queryType { get; set; }
+        public double[] data { get; set; }
 
-        public ChartModels(ChartTypes ct)
+        [Required]
+        [DataType(DataType.Custom)]
+        [Display(Name = "Iterations")]
+        public int iterations { get; set; }
+
+        [Required]
+        [DataType(DataType.Custom)]
+        [Display(Name = "Epsilon")]
+        public double epsilon { get; set; }
+
+        [Required]
+        [DataType(DataType.Custom)]
+        [Display(Name = "BinCount")]
+        public int binCount { get; set; }*/
+
+        public ChartModel(ChartTypes ct)
         {
             chart = new DotNet.Highcharts.Highcharts("chart")
                     .InitChart(new Chart

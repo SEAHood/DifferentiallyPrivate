@@ -8,9 +8,34 @@
                                                                 InsertionMode = InsertionMode.Replace,
                                                                 UpdateTargetId = "MainChart" })-->
 
+<script>
+    $(document).ready(function () {
+        HideLoading();
+    });
+    
+    function ShowLoading() {
+        $("#loadingScreen").show();
+        $("#loadingPanel").show();
+    };
+
+    function HideLoading() {
+        $("#loadingScreen").hide();
+        $("#loadingPanel").hide();
+    };
+</script>
 
 
-@using (Ajax.BeginForm("ChartingSimple", "Chart", new AjaxOptions{ UpdateTargetId = "MainChart" })) {
+<div id="loadingScreen">
+</div>
+<div id="loadingPanel">
+    Loading..<br />
+    <img src="~/Content/img/ajax-loader.gif" />
+</div>
+
+@using (Ajax.BeginForm("ChartingSimple", "Chart", new AjaxOptions{ UpdateTargetId = "MainChart",
+                                                                   OnBegin = "return ShowLoading()",
+                                                                   OnSuccess = "return HideLoading()" }))
+{
     <table>
         <tr>
             <td>
