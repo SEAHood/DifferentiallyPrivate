@@ -2,10 +2,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>@ViewBag.Message</h3>
-<p><a href="~/charting/simple">Simple Data</a><br />
-Simple data for analysis, such as a list of numbers from 1 to 10<br /><br /></p>
-<p><a href="#">Unknown Data</a><br />
-Hidden data, illustrating the balance between privacy and utility<br /><br /></p>
-<p><a href="#">Home Data</a><br />
-Data mined from a smart-home, a real world application of differential privacy</p>
+<div id="viewContent">
+    <h3>@ViewBag.Message</h3>
+    <p><a href="~/charting/simple">Simple Data</a><br />
+    Simple data for analysis, such as a list of numbers from 1 to 10<br /><br /></p>
+    <p><a href="#">Unknown Data</a><br />
+    Hidden data, illustrating the balance between privacy and utility<br /><br /></p>
+    <p><a href="#">Home Data</a><br />
+    Data mined from a smart-home, a real world application of differential privacy</p>
+</div>

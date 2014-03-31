@@ -2,97 +2,99 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h3>Simple Charting</h3>
+<div id="viewContent">
+    <h3>Simple Charting</h3>
 
-<!--Ajax.ActionLink("This is a test", "ChartingSimple", new AjaxOptions {  HttpMethod = "POST",
-                                                                InsertionMode = InsertionMode.Replace,
-                                                                UpdateTargetId = "MainChart" })-->
+    <!--Ajax.ActionLink("This is a test", "ChartingSimple", new AjaxOptions {  HttpMethod = "POST",
+                                                                    InsertionMode = InsertionMode.Replace,
+                                                                    UpdateTargetId = "MainChart" })-->
 
-<script>
-    $(document).ready(function () {
-        HideLoading();
-    });
+    <script>
+        $(document).ready(function () {
+            HideLoading();
+        });
     
-    function ShowLoading() {
-        $("#loadingScreen").show();
-        $("#loadingPanel").show();
-    };
+        function ShowLoading() {
+            $("#loadingScreen").show();
+            $("#loadingPanel").show();
+        };
 
-    function HideLoading() {
-        $("#loadingScreen").hide();
-        $("#loadingPanel").hide();
-    };
-</script>
+        function HideLoading() {
+            $("#loadingScreen").hide();
+            $("#loadingPanel").hide();
+        };
+    </script>
 
 
-<div id="loadingScreen">
+    <div id="loadingScreen">
+    </div>
+    <div id="loadingPanel">
+        Loading..<br />
+        <img src="~/Content/img/ajax-loader.gif" />
+    </div>
+
+    @using (Ajax.BeginForm("ChartingSimple", "Chart", new AjaxOptions{ UpdateTargetId = "MainChart",
+                                                                       OnBegin = "return ShowLoading()",
+                                                                       OnSuccess = "return HideLoading()" }))
+    {
+        <table>
+            <tr>
+                <td>
+                    <label for="iterations" class="formLabel">Iterations:</label>
+                </td>
+                <td>
+                    <input id="iterations" type="text" name="iterations" maxlength="5" size="5" autocomplete="off" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="epsilon" class="formLabel">Epsilon:</label>
+                </td>
+                <td>
+                    <input id="epsilon" type="text" name="epsilon" size="5" autocomplete="off" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="bins" class="formLabel"># of Bins:</label>
+                </td>
+                <td>
+                    <input id="bins" type="text" name="bins" maxlength="4" size="5" autocomplete="off" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="data" class="formLabel">Data list (comma-delimited):</label>
+                </td>
+                <td>
+                    <input id="data" type="text" name="data" size="20" value="1,2,3,4,5,6,7,8,9,10" autocomplete="off" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="formLabel">Query Type:</label>
+                </td>
+                <td>
+                    <input id="avg" type="radio" name="type" value="Average" checked="checked"  />
+                    <label for="avg" class="formLabel">Average</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <input id="med" type="radio" name="type" value="Median" />
+                    <label for="med" class="formLabel">Median</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="submit" type="submit" value="Go" />
+                </td>
+            </tr>
+        </table>
+    } 
+
+    <div id="MainChart">
+    </div>
 </div>
-<div id="loadingPanel">
-    Loading..<br />
-    <img src="~/Content/img/ajax-loader.gif" />
-</div>
-
-@using (Ajax.BeginForm("ChartingSimple", "Chart", new AjaxOptions{ UpdateTargetId = "MainChart",
-                                                                   OnBegin = "return ShowLoading()",
-                                                                   OnSuccess = "return HideLoading()" }))
-{
-    <table>
-        <tr>
-            <td>
-                <label for="iterations" class="formLabel">Iterations:</label>
-            </td>
-            <td>
-                <input id="iterations" type="text" name="iterations" maxlength="5" size="5" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="epsilon" class="formLabel">Epsilon:</label>
-            </td>
-            <td>
-                <input id="epsilon" type="text" name="epsilon" size="3" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="bins" class="formLabel"># of Bins:</label>
-            </td>
-            <td>
-                <input id="bins" type="text" name="bins" maxlength="4" size="4" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="data" class="formLabel">Data list (comma-delimited):</label>
-            </td>
-            <td>
-                <input id="data" type="text" name="data" size="50" value="1,2,3,4,5,6,7,8,9,10" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="avg" class="formLabel">Average:</label>
-            </td>
-            <td>
-                <input id="avg" type="radio" name="type" value="Average" checked="checked"  />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label for="med" class="formLabel">Median:</label>
-            </td>
-            <td>
-                <input id="med" type="radio" name="type" value="Median" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <input id="submit" type="submit" value="Go" />
-            </td>
-        </tr>
-    </table>
-} 
-
-<div id="MainChart">
-</div>
-                                                                

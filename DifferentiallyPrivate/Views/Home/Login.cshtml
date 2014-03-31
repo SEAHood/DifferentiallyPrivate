@@ -4,24 +4,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using (Html.BeginForm())
-{
-    @Html.ValidationSummary(true, "Login failed. Check your login details.");
-    <div>
-            <div>
-                @Html.LabelFor(u => u.UserName)
-            </div>
-            <div>
-                @Html.TextBoxFor(u => u.UserName)
-                @Html.ValidationMessageFor(u => u.UserName)
-            </div>
-            <div>
-                @Html.LabelFor(u => u.Password)
-            </div>
-            <div>
-                @Html.PasswordFor(u => u.Password)
-                @Html.ValidationMessageFor(u => u.Password)
-            </div>
-            <input type="submit" value="Log In" />
-    </div>
-}
+<div id="viewContent">
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true, "Login failed. Check your login details.");
+        <div>
+                <div>
+                    @Html.LabelFor(u => u.UserName)
+                </div>
+                <div>
+                    @Html.TextBoxFor(u => u.UserName)
+                    @Html.ValidationMessageFor(u => u.UserName)
+                </div>
+                <div>
+                    @Html.LabelFor(u => u.Password)
+                </div>
+                <div>
+                    @Html.PasswordFor(u => u.Password)
+                    @Html.ValidationMessageFor(u => u.Password)
+                </div>
+                <input type="submit" value="Log In" />
+        </div>
+    }
+</div>

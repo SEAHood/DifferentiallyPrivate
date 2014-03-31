@@ -21,6 +21,7 @@ namespace DifferentiallyPrivate.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult ChartingSimple()
         {
             if (Request.IsAjaxRequest())
