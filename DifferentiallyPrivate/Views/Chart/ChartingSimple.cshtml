@@ -82,8 +82,8 @@
     <div id="loadingScreen">
     </div>
     <div id="loadingPanel">
-        Loading..<br />
-        <img src="~/Content/img/ajax-loader.gif" />
+        Generating charts..<br />
+        <img src="~/Content/img/ajax-loader.gif" style="margin-top:10px;"/>
     </div>
 
     <!--using (Ajax.BeginForm("ChartingSimple", "Chart", new AjaxOptions{ UpdateTargetId = "MainChart",
@@ -108,7 +108,7 @@
                     @Html.HiddenFor(c => Model.allCharts[i].id)
                 }
             //}
-            <h3>New Chart</h3>
+            <h4>New Query</h4>
             <table>
                 <tr>
                     <td>

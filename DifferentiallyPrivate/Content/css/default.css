@@ -7,6 +7,7 @@ body {
 	text-align:justify;
 	background-image:url("../img/agsquare.png");
 	background-repeat:repeat;
+    overflow-y:scroll;
 }
 
 
@@ -16,12 +17,9 @@ h3{
 }
 
 h4 {
+	color:#494949;
 	margin-top:0;
-	margin-bottom:0;
-}
-
-#firstH3 {
-	margin-top:0;
+	margin-bottom:5px;
 }
 
 a {
@@ -156,7 +154,7 @@ img {
     text-align:center;
 
     border-radius:8px;
-    border:1px solid #A0A0A0;
+    border:4px double #A0A0A0;
 }
 
 #chartInput {
@@ -170,12 +168,8 @@ img {
 
     padding:10px;
 
-    border-radius:5px;
-    border:1px solid #A0A0A0;
-}
-#chartInput table {
-    margin-left:auto;
-    margin-right:auto;
+    border-radius:8px;
+    border:4px double #A0A0A0;
 }
 
 .mainButton {
