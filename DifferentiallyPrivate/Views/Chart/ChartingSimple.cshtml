@@ -2,8 +2,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@model DifferentiallyPrivate.Models.MultiChart
+
 <div id="viewContent">
     <h3>Simple Charting</h3>
+
 
     <!--Ajax.ActionLink("This is a test", "ChartingSimple", new AjaxOptions {  HttpMethod = "POST",
                                                                     InsertionMode = InsertionMode.Replace,
@@ -12,9 +15,21 @@
     <script>
         $(document).ready(function () {
             HideLoading();
+            HideChartInput();
         });
-    
+
+        function ShowChartInput() {
+            $("#loadingScreen").show();
+            $("#chartInput").show();
+        }
+
+        function HideChartInput() {
+            $("#loadingScreen").hide();
+            $("#chartInput").hide();
+        }
+
         function ShowLoading() {
+            $('#loadingScreen').css("height", $(document).height());
             $("#loadingScreen").show();
             $("#loadingPanel").show();
         };
@@ -25,6 +40,44 @@
         };
     </script>
 
+    <div id="chartsAdded">
+        @if (Model.allCharts.Count > 1) //If number of charts is 1, only the new unedited chart exists
+        {
+            for (int i = 0; i <= Model.allCharts.Count - 2; i++) //Trim off new unedited chart model - default values (not added by user)
+            {
+                <p>Query(@(Model.allCharts[i].queryType_input));
+                    @(Model.allCharts[i].iterations_input) iterations; 
+                    @(Model.allCharts[i].binCount_input) bins;
+                    ε = @(Model.allCharts[i].epsilon_input);</p>
+            }
+        }
+        else
+        {
+            <p>No queries added.</p>
+        }
+    </div>
+    
+    <input type="button" value="Add Query" onclick="ShowChartInput()" class="mainButton" />
+
+    @using (Ajax.BeginForm("ChartingSimple", "Chart", new AjaxOptions
+    {
+    UpdateTargetId = "MainChart",
+    OnBegin = "return ShowLoading()",
+    OnSuccess = "return HideLoading()"
+    }))
+    {
+        for (int i = 0; i < Model.allCharts.Count - 1; i++)
+        {
+            @Html.HiddenFor(c => Model.allCharts[i].binCount_input)
+            @Html.HiddenFor(c => Model.allCharts[i].data_input)
+            @Html.HiddenFor(c => Model.allCharts[i].epsilon_input)
+            @Html.HiddenFor(c => Model.allCharts[i].iterations_input)
+            @Html.HiddenFor(c => Model.allCharts[i].queryType_input)
+            @Html.HiddenFor(c => Model.allCharts[i].id)
+        }
+        <input id="submit" type="submit" value="Generate Query Charts" class="mainButton" />
+    }
+    
 
     <div id="loadingScreen">
     </div>
@@ -33,68 +86,89 @@
         <img src="~/Content/img/ajax-loader.gif" />
     </div>
 
-    @using (Ajax.BeginForm("ChartingSimple", "Chart", new AjaxOptions{ UpdateTargetId = "MainChart",
-                                                                       OnBegin = "return ShowLoading()",
-                                                                       OnSuccess = "return HideLoading()" }))
-    {
-        <table>
-            <tr>
-                <td>
-                    <label for="iterations" class="formLabel">Iterations:</label>
-                </td>
-                <td>
-                    <input id="iterations" type="text" name="iterations" maxlength="5" size="5" autocomplete="off" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="epsilon" class="formLabel">Epsilon:</label>
-                </td>
-                <td>
-                    <input id="epsilon" type="text" name="epsilon" size="5" autocomplete="off" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="bins" class="formLabel"># of Bins:</label>
-                </td>
-                <td>
-                    <input id="bins" type="text" name="bins" maxlength="4" size="5" autocomplete="off" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label for="data" class="formLabel">Data list (comma-delimited):</label>
-                </td>
-                <td>
-                    <input id="data" type="text" name="data" size="20" value="1,2,3,4,5,6,7,8,9,10" autocomplete="off" />
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label class="formLabel">Query Type:</label>
-                </td>
-                <td>
-                    <input id="avg" type="radio" name="type" value="Average" checked="checked"  />
-                    <label for="avg" class="formLabel">Average</label>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                </td>
-                <td>
-                    <input id="med" type="radio" name="type" value="Median" />
-                    <label for="med" class="formLabel">Median</label>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input id="submit" type="submit" value="Go" />
-                </td>
-            </tr>
-        </table>
-    } 
+    <!--using (Ajax.BeginForm("ChartingSimple", "Chart", new AjaxOptions{ UpdateTargetId = "MainChart",
+                                                                           OnBegin = "return ShowLoading()",
+                                                                           OnSuccess = "return HideLoading()" }))
+    -->
+    <div id="chartInput">
+        @using (Html.BeginForm("ChartingSimple", "Chart", FormMethod.Post))
+        {
+            //if (Model.allCharts.Count > 1)
+            //{
+                for (int i = 0; i < Model.allCharts.Count; i++)
+                {
+                    if (Model.allCharts[i].id != Model.allCharts.Count - 1)
+                    {
+                        @Html.HiddenFor(c => Model.allCharts[i].binCount_input)
+                        @Html.HiddenFor(c => Model.allCharts[i].data_input)
+                        @Html.HiddenFor(c => Model.allCharts[i].epsilon_input)
+                        @Html.HiddenFor(c => Model.allCharts[i].iterations_input)
+                        @Html.HiddenFor(c => Model.allCharts[i].queryType_input)
+                    }
+                    @Html.HiddenFor(c => Model.allCharts[i].id)
+                }
+            //}
+            <h3>New Chart</h3>
+            <table>
+                <tr>
+                    <td>
+                        @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].iterations_input)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(c => Model.allCharts[Model.allCharts.Count - 1].iterations_input)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].epsilon_input)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(c => Model.allCharts[Model.allCharts.Count - 1].epsilon_input)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].binCount_input)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(c => Model.allCharts[Model.allCharts.Count - 1].binCount_input)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].data_input)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(c => Model.allCharts[Model.allCharts.Count - 1].data_input)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].queryType_input)
+                    </td>
+                    <td>
+                        @Html.RadioButtonFor(c => Model.allCharts[Model.allCharts.Count - 1].queryType_input, "avg")
+                        <label class="formLabel">Average</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                        @Html.RadioButtonFor(c => Model.allCharts[Model.allCharts.Count - 1].queryType_input, "med")
+                        <label class="formLabel">Median</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="Add" onclick="HideChartInput()" class="mainButton" />
+                        <input type="button" value="Cancel" onclick="HideChartInput()" class="mainButton" />
+                    </td>
+                </tr>
+            </table>
+        }
+    </div>
 
     <div id="MainChart">
-    </div>
+    </div>  
 </div>

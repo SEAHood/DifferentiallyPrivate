@@ -130,9 +130,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ChartModel.cs" />
+    <Compile Include="Models\MultiChart.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\SmartStarInterface.cs" />
+    <Compile Include="Services\DBInterface.cs" />
     <Compile Include="Services\PINQAnalyser.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +145,8 @@
     <Content Include="Content\img\agsquare.png" />
     <Content Include="Content\img\agsquare_%402X.png" />
     <Content Include="Content\img\dp.png" />
+    <Content Include="Content\img\dplogo.png" />
+    <Content Include="Content\img\favicon.ico" />
     <Content Include="Content\js\highcharts.js" />
     <Content Include="Content\js\jquery-1.11.0.min.js" />
     <Content Include="Global.asax" />
@@ -170,6 +173,7 @@
     <Content Include="Views\Chart\ChartingSimple.cshtml" />
     <Content Include="Views\Chart\_Chart.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Chart\_AddChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -23,12 +23,12 @@ namespace DifferentiallyPrivate.Models
         public bool IsValid()
         {
             EncodePassword();
-            var SSI = new SmartStarInterface();
-            return SSI.ValidateUser(this);
+            var DBI = new DBInterface();
+            return DBI.ValidateUser(this);
         }
 
         
-        public void EncodePassword()
+        private void EncodePassword()
         {            
             byte[] bytes = Encoding.UTF8.GetBytes(Password);
  
