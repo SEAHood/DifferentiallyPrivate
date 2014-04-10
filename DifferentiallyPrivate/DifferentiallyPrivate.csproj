@@ -147,6 +147,7 @@
     <Content Include="Content\img\dp.png" />
     <Content Include="Content\img\dplogo.png" />
     <Content Include="Content\img\favicon.ico" />
+    <Content Include="Content\img\logo.png" />
     <Content Include="Content\js\highcharts.js" />
     <Content Include="Content\js\jquery-1.11.0.min.js" />
     <Content Include="Global.asax" />
@@ -173,7 +174,7 @@
     <Content Include="Views\Chart\ChartingSimple.cshtml" />
     <Content Include="Views\Chart\_Chart.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
-    <Content Include="Views\Chart\_AddChart.cshtml" />
+    <Content Include="Views\Chart\ChartingHome.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

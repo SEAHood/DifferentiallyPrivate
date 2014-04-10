@@ -56,6 +56,12 @@ namespace DifferentiallyPrivate
             );
 
             routes.MapRoute(
+                name: "ChartingHome",
+                url: "charting/home",
+                defaults: new { controller = "Chart", action = "ChartingHome" }
+            );
+
+            routes.MapRoute(
                 name: "ASync",
                 url: "async",
                 defaults: new { controller = "Home", action = "ASync"}

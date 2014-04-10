@@ -10,20 +10,14 @@
         @Html.ValidationSummary(true, "Login failed. Check your login details.");
         <div>
                 <div>
-                    @Html.LabelFor(u => u.UserName)
-                </div>
-                <div>
-                    @Html.TextBoxFor(u => u.UserName)
+                    @Html.TextBoxFor(u => u.UserName, new { placeholder = "Username", @class = "mainTextbox" })
                     @Html.ValidationMessageFor(u => u.UserName)
                 </div>
                 <div>
-                    @Html.LabelFor(u => u.Password)
-                </div>
-                <div>
-                    @Html.PasswordFor(u => u.Password)
+                    @Html.PasswordFor(u => u.Password, new { placeholder = "Password", @class = "mainTextbox" })
                     @Html.ValidationMessageFor(u => u.Password)
                 </div>
-                <input type="submit" value="Log In" />
+                <input type="submit" value="Log In" class="mainButton"/>
         </div>
     }
 </div>

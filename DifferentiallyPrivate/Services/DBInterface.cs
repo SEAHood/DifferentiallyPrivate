@@ -20,26 +20,35 @@ namespace DifferentiallyPrivate.Services
 
         public bool ValidateUser(User u)
         {
-            using (var con = new SqlConnection(connectionString))
+            try
             {
-                SqlCommand cmd = new SqlCommand();
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                cmd.CommandText = "GetPassword";
-                cmd.Parameters.Add(new SqlParameter("username", u.UserName));
-                cmd.Connection = con;
-
-                //ADD ERROR HANDLING
-                con.Open();
-                var reader = cmd.ExecuteReader();
-                if (reader.HasRows)
+                using (var con = new SqlConnection(connectionString))
                 {
-                    reader.Read();
-                    var DBPassword = reader["password"];
-                    if (DBPassword.ToString() == u.Password)
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.CommandText = "GetPassword";
+                    cmd.Parameters.Add(new SqlParameter("username", u.UserName));
+                    cmd.Connection = con;
+
+                    //ADD ERROR HANDLING
+                    con.Open();
+                    var reader = cmd.ExecuteReader();
+                    if (reader.HasRows)
                     {
-                        reader.Dispose();
-                        cmd.Dispose();
-                        return true;
+                        reader.Read();
+                        var DBPassword = reader["password"];
+                        if (DBPassword.ToString() == u.Password)
+                        {
+                            reader.Dispose();
+                            cmd.Dispose();
+                            return true;
+                        }
+                        else
+                        {
+                            reader.Dispose();
+                            cmd.Dispose();
+                            return false;
+                        }
                     }
                     else
                     {
@@ -48,14 +57,11 @@ namespace DifferentiallyPrivate.Services
                         return false;
                     }
                 }
-                else
-                {
-                    reader.Dispose();
-                    cmd.Dispose();
-                    return false;
-                }
             }
-            return false;
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

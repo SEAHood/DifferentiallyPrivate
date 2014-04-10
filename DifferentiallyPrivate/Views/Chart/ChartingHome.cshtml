@@ -5,7 +5,7 @@
 @model DifferentiallyPrivate.Models.MultiChart
 
 <div id="viewContent">
-    <h3>Simple Charting</h3>
+    <h3>Home Charting</h3>
 
     <script>
         $(document).ready(function () {
@@ -83,11 +83,7 @@
         Generating charts..<br />
         <img src="~/Content/img/ajax-loader.gif" style="margin-top:10px;"/>
     </div>
-
-    <!--using (Ajax.BeginForm("ChartingSimple", "Chart", new AjaxOptions{ UpdateTargetId = "MainChart",
-                                                                           OnBegin = "return ShowLoading()",
-                                                                           OnSuccess = "return HideLoading()" }))
-    -->
+    
     <div id="chartInput">
         @using (Html.BeginForm("ChartingSimple", "Chart", FormMethod.Post))
         {

@@ -1,5 +1,21 @@
 ﻿@model DifferentiallyPrivate.Models.MultiChart
 @for (int i = 0; i < Model.allCharts.Count - 1; i++)
 {
+    <br /><br/>
+    string chartHeader = "Chart ID " + Model.allCharts[i].id.ToString() +
+                          " -- Data {" + Model.allCharts[i].data_input + "} -- " +
+                          Model.allCharts[i].noiseType_input +
+                          " (ε = " + Model.allCharts[i].epsilon_input;
+                          
+    if (Model.allCharts[i].noiseType_input == "gaussian")
+    {
+        chartHeader += ", δ = " + Model.allCharts[i].delta_input + ")";
+    }
+    else
+    {
+        chartHeader += ")";
+    }
+    
+    <h4>@chartHeader</h4>
     @(Model.allCharts[i].highchart)
 }

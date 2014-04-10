@@ -23,6 +23,16 @@ namespace DifferentiallyPrivate.Models
 
         [Required]
         [DataType(DataType.Text)]
+        [Display(Name = "Distribution: ")]
+        public string noiseType_input { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Delta: ")]
+        public string delta_input { get; set; }
+
+        [Required]
+        [DataType(DataType.Text)]
         [Display(Name = "Data list: ")]
         public string data_input { get; set; }
 
@@ -46,6 +56,10 @@ namespace DifferentiallyPrivate.Models
         private double epsilon;
         private int binCount;
         private string queryType;
+        private int noiseType;
+        private double delta;
+
+        private int chartType; //0 = Simple, 1 = Home
 
         public ChartModel()
         {
@@ -59,9 +73,11 @@ namespace DifferentiallyPrivate.Models
             //Defaults
             iterations_input = "1000";
             epsilon_input = "1";
-            binCount_input = "100";
+            binCount_input = "10";
             queryType_input = "avg";
             data_input = "1,2,3,4,5,6,7,8,9,10";
+            noiseType_input = "laplace";
+            delta_input = "0.5";
         }
 
         public void InitChart()
@@ -98,11 +114,20 @@ namespace DifferentiallyPrivate.Models
                 //Epsilon
                 epsilon = Double.Parse(epsilon_input);
 
+                //Delta
+                delta = Double.Parse(delta_input);
+
                 //Bins
                 binCount = Int32.Parse(binCount_input);
 
                 //Query Type
                 queryType = queryType_input;
+
+                //Noise Type
+                if (noiseType_input == "laplace")
+                    noiseType = 0;
+                else if (noiseType_input == "gaussian")
+                    noiseType = 1;
                 
                 return true;
             }
@@ -114,7 +139,12 @@ namespace DifferentiallyPrivate.Models
 
         public Highcharts FillChart()
         {
-                PINQAnalyser PINQA = new PINQAnalyser() { iData = data, iterations = iterations, epsilon = epsilon, binCount = binCount };
+                PINQAnalyser PINQA = new PINQAnalyser() { iData = data, 
+                                                          iterations = iterations,
+                                                          epsilon = epsilon,
+                                                          binCount = binCount,
+                                                          noiseType = noiseType,
+                                                          delta = delta};
 
                 object[][] results = null;
 
@@ -126,10 +156,10 @@ namespace DifferentiallyPrivate.Models
                 object[] xAxis = results[0];
                 object[] yAxis = results[1];
 
-                for (int i = 0; i < xAxis.Count() - 1; i++)
+                /*for (int i = 0; i < xAxis.Count() - 1; i++)
                 {
                     xAxis[i] = Math.Round(Double.Parse(xAxis[i].ToString()), 2).ToString();
-                }
+                }*/
 
                 highchart.SetXAxis(new DotNet.Highcharts.Options.XAxis
                                 {
@@ -140,7 +170,6 @@ namespace DifferentiallyPrivate.Models
                                     Data = new DotNet.Highcharts.Helpers.Data(yAxis)
                                 });
                 highchart.SetCredits(new DotNet.Highcharts.Options.Credits() { Text = "Simple Chart" });
-
                 highchart.SetTitle(new Title()
                 {
                     Text = "PINQ " + queryType + "s (" + iterations + " iterations; " +
