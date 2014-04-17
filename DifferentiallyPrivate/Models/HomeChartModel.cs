@@ -6,23 +6,24 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
 namespace DifferentiallyPrivate.Models
 {
-    public class ChartModel
+    public class HomeChartModel
     {
         public int id { get; set; }
         public DotNet.Highcharts.Highcharts highchart;
 
         [Required]
+        [DataType(DataType.Text)]
         [Display(Name = "Query Type: ")]
         public string queryType_input { get; set; }
         public IEnumerable<SelectListItem> query_types { get; set; }
 
         [Required]
+        [DataType(DataType.Text)]
         [Display(Name = "Distribution: ")]
         public string noiseType_input { get; set; }
         public IEnumerable<SelectListItem> noise_types { get; set; }
@@ -33,9 +34,9 @@ namespace DifferentiallyPrivate.Models
         public string delta_input { get; set; }
 
         [Required]
-        [DataType(DataType.Text)]
-        [Display(Name = "Data list: ")]
-        public string data_input { get; set; }
+        [Display(Name = "Data category: ")]
+        public string data_cat_input { get; set; }
+        public IEnumerable<SelectListItem> data_cats { get; set; }
 
         [Required]
         [DataType(DataType.Text)]
@@ -52,21 +53,36 @@ namespace DifferentiallyPrivate.Models
         [Display(Name = "# of Bins: ")]
         public string binCount_input { get; set; }
 
+        [Required]
+        [DataType(DataType.Text)]
+        [Display(Name = "Timespan: ")]
+        public string timespan_input { get; set; }
+        public IEnumerable<SelectListItem> timespans { get; set; }
+
         private double[] data;
+        private string data_input;
         private int iterations;
         private double epsilon;
         private int binCount;
         private string queryType;
         private int noiseType;
         private double delta;
+        private string timespan;
+        private string data_cat;
 
-        public ChartModel()
+        public HomeChartModel()
         {
 
         }
 
-        public ChartModel(int _id)
+        public HomeChartModel(int _id)
         {
+            data_cats = new[] {
+                new SelectListItem { Value = "temp", Text = "Temperature" },
+                new SelectListItem { Value = "humidity", Text = "Humidity" },
+                //new SelectListItem { Value = "power", Text = "Power" },        ISSUE NEEDS FIXING
+                new SelectListItem { Value = "windspeed", Text = "Wind Speed" }
+            };
             noise_types = new[] {
                 new SelectListItem { Value = "laplace", Text = "Laplace" },
                 new SelectListItem { Value = "gaussian", Text = "Gaussian" }
@@ -75,15 +91,23 @@ namespace DifferentiallyPrivate.Models
                 new SelectListItem { Value = "avg", Text = "Average" },
                 new SelectListItem { Value = "med", Text = "Median" }
             };
+            timespans = new[] {
+                new SelectListItem { Value = "3600", Text = "Hour" },
+                new SelectListItem { Value = "86400", Text = "Day" },
+                new SelectListItem { Value = "604800", Text = "Week" },
+                new SelectListItem { Value = "2629740", Text = "Month" }
+            };
 
             id = _id;
+            queryType_input = "avg";
+            data_cat_input = "temp";
+            timespan_input = "hour";
 
             //Defaults
             iterations_input = "1000";
             epsilon_input = "1";
             binCount_input = "10";
             queryType_input = "avg";
-            data_input = "1,2,3,4,5,6,7,8,9,10";
             noiseType_input = "laplace";
             delta_input = "0.0001";
         }
@@ -100,22 +124,27 @@ namespace DifferentiallyPrivate.Models
                     });
         }
 
+        public void setData(double[] _data_input)
+        {
+            data = _data_input;
+        }
+
         public bool IsValid()
         {
             try
             {
                 //Data
-                data_input = data_input.Replace(" ", "");
+                /*data_input = data_input.Replace(" ", "");
 
                 string[] tokenisedData = data_input.Split(',');
                 data = new double[tokenisedData.Count()];
-
+                
                 for (int i = 0; i < tokenisedData.Count(); i++)
                 {
                     data[i] = Double.Parse(tokenisedData[i]);
                 }
                 data = data.OrderBy(x => x).ToArray();
-
+                */
                 //Iterations
                 iterations = Int32.Parse(iterations_input);
 

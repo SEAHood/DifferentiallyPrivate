@@ -11,6 +11,17 @@
         $(document).ready(function () {
             HideLoading();
             HideChartInput();
+            $("#deltaInput").hide();
+            $(".noiseType").change(function () {
+                if ($(this).val() == "gaussian") {
+                    $("#deltaInput").show();
+                }
+                else {
+                    $("#deltaInput").hide();
+                }
+            });
+
+            
         });
 
         function ShowChartInput() {
@@ -55,7 +66,10 @@
     </div>
     
     <input type="button" value="Add Query" onclick="ShowChartInput()" class="mainButton" />
-
+    @using (Html.BeginForm("ChartingSimple", "Chart", FormMethod.Get))
+    {
+        <input type="submit" value="Clear All" class="mainButton" />
+    }
     @using (Ajax.BeginForm("ChartingSimple", "Chart", new AjaxOptions
     {
     UpdateTargetId = "MainChart",
@@ -143,41 +157,29 @@
                         @Html.TextBoxFor(c => Model.allCharts[Model.allCharts.Count - 1].data_input, new { @class = "mainTextbox" })
                     </td>
                 </tr>
+
                 <tr>
                     <td>
                         @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].queryType_input)
                     </td>
                     <td>
-                        @Html.RadioButtonFor(c => Model.allCharts[Model.allCharts.Count - 1].queryType_input, "avg")
-                        <label class="formLabel">Average</label>
+                        @Html.DropDownListFor(c => Model.allCharts[Model.allCharts.Count - 1].queryType_input,
+                                              new SelectList(Model.allCharts[Model.allCharts.Count - 1].query_types, "Value", "Text"))
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        @Html.RadioButtonFor(c => Model.allCharts[Model.allCharts.Count - 1].queryType_input, "med")
-                        <label class="formLabel">Median</label>
-                    </td>
-                </tr>
+                
                 <tr>
                     <td>
                         @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].noiseType_input)
                     </td>
                     <td>
-                        @Html.RadioButtonFor(c => Model.allCharts[Model.allCharts.Count - 1].noiseType_input, "laplace")
-                        <label class="formLabel">Laplace</label>
+                        @Html.DropDownListFor(c => Model.allCharts[Model.allCharts.Count - 1].noiseType_input, 
+                                              new SelectList(Model.allCharts[Model.allCharts.Count - 1].noise_types, "Value", "Text"),
+                                              new { @class = "noiseType" })
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        @Html.RadioButtonFor(c => Model.allCharts[Model.allCharts.Count - 1].noiseType_input, "gaussian")
-                        <label class="formLabel">Gaussian</label>
-                    </td>
-                </tr>
-                <tr>
+
+                <tr id="deltaInput">
                     <td>
                         @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].delta_input)
                     </td>

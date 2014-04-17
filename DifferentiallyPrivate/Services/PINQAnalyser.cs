@@ -22,7 +22,7 @@ namespace DifferentiallyPrivate.Services
             //double low = iData[0];                              //-------
             //double high = iData[iData.Count() - 1];             //MAKE MORE GENERAL - NOT JUST DOUBLE
             double low = 0;
-            double high = 10;
+            double high = 100;
             int[] histoCount = new int[binCount];
             double[] averages = new double[iterations];
 

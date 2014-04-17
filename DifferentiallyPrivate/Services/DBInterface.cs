@@ -63,5 +63,42 @@ namespace DifferentiallyPrivate.Services
                 return false;
             }
         }
+
+        public double[] GetDoublesFromDB(string category, string timespan)
+        {
+            using (var con = new SqlConnection(connectionString))
+            {
+                List<double> data = new List<double>();
+                try
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.CommandText = "GetDoubleData";
+                    cmd.Parameters.Add(new SqlParameter("category", category));
+                    cmd.Parameters.Add(new SqlParameter("timespan", Int32.Parse(timespan)));
+                    cmd.Connection = con;
+
+                    //ADD ERROR HANDLING
+                    con.Open();
+                    var reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        double val = (double)reader.GetDecimal(0);
+                        //double singleValue = reader.GetDouble(0);//(double)reader["output"];
+                        data.Add(val);
+                    }
+
+                    reader.Dispose();
+                    con.Close();
+                    cmd.Dispose();
+                    return data.ToArray();
+                }
+                catch (Exception ex)
+                {
+                    con.Close();
+                    return null;
+                }
+            }
+        }
     }
 }

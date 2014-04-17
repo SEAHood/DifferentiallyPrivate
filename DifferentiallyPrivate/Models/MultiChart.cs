@@ -9,10 +9,12 @@ namespace DifferentiallyPrivate.Models
     public class MultiChart
     {
         public List<ChartModel> allCharts { get; set; }
+        public List<HomeChartModel> allHomeCharts { get; set; }
 
         public MultiChart()
         {
             allCharts = new List<ChartModel>();
+            allHomeCharts = new List<HomeChartModel>();
         }
     }
 }

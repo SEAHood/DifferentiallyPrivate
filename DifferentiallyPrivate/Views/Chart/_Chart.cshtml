@@ -1,5 +1,5 @@
 ﻿@model DifferentiallyPrivate.Models.MultiChart
-@for (int i = 0; i < Model.allCharts.Count - 1; i++)
+@for (int i = 0; i < Model.allCharts.Count - 1; i++) //SIMPLE CHARTS
 {
     <br /><br/>
     string chartHeader = "Chart ID " + Model.allCharts[i].id.ToString() +
@@ -18,4 +18,25 @@
     
     <h4>@chartHeader</h4>
     @(Model.allCharts[i].highchart)
+}
+
+
+@for (int i = 0; i < Model.allHomeCharts.Count - 1; i++) //HOME CHARTS
+{
+    <br /><br/>
+    string chartHeader = "Chart ID " + Model.allHomeCharts[i].id.ToString() +
+                          Model.allHomeCharts[i].noiseType_input +
+                          " (ε = " + Model.allHomeCharts[i].epsilon_input;
+
+    if (Model.allHomeCharts[i].noiseType_input == "gaussian")
+    {
+        chartHeader += ", δ = " + Model.allHomeCharts[i].delta_input + ")";
+    }
+    else
+    {
+        chartHeader += ")";
+    }
+    
+    <h4>@chartHeader</h4>
+    @(Model.allHomeCharts[i].highchart)
 }

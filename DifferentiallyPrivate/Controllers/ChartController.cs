@@ -1,4 +1,5 @@
 ﻿using DifferentiallyPrivate.Models;
+using DifferentiallyPrivate.Services;
 using DotNet.Highcharts;
 using DotNet.Highcharts.Enums;
 using DotNet.Highcharts.Options;
@@ -81,10 +82,64 @@ namespace DifferentiallyPrivate.Controllers
             return View();
         }
 
+        [Authorize]
+        [HttpGet]
         public ActionResult ChartingHome()
         {
-            return View();
+            MultiChart mc = new MultiChart();
+            HomeChartModel homeChart = new HomeChartModel(0);
+            mc.allHomeCharts.Add(homeChart);
+            return View(mc);
         }
 
+        [Authorize]
+        [HttpPost]
+        public ActionResult ChartingHome(MultiChart mc)
+        {
+            if (Request.IsAjaxRequest()) //BUILD CHARTS IN ALLCHARTS
+            {
+                foreach (var chart in mc.allHomeCharts)
+                {
+                    //GET DATA FROM DATABASE **TO DO**
+                    DBInterface DBI = new DBInterface();
+                    double[] data = DBI.GetDoublesFromDB(chart.data_cat_input, chart.timespan_input);
+
+                    while (data == null) { }
+
+                    chart.setData(data);
+
+                    if (chart.IsValid())
+                    {
+                        chart.InitChart();
+                        chart.FillChart();
+                    }
+                }
+
+                HomeChartModel cm = new HomeChartModel(mc.allHomeCharts.Count);
+                mc.allHomeCharts.Add(cm);
+                return PartialView("_Chart", mc);
+            }
+            else //ADD CHART TO ALLCHARTS
+            {
+                if (mc.allHomeCharts.Last().IsValid()) //Added chart is valid - add new chart to be edited
+                {
+                    HomeChartModel cm = new HomeChartModel(mc.allHomeCharts.Count);
+                    mc.allHomeCharts.Add(cm);
+                    foreach (var chart in mc.allHomeCharts)
+                    {
+                        chart.InitChart();
+                    }
+                    return View(mc);
+                }
+                else //Added chart is invalid
+                {
+                    ModelState.AddModelError("", "Chart values invalid!");
+                    mc.allHomeCharts.Remove(mc.allHomeCharts.Last());
+                    HomeChartModel cm = new HomeChartModel(mc.allHomeCharts.Count - 1);
+                    mc.allHomeCharts.Add(cm);
+                    return View(mc);
+                }
+            }
+        }
     }
 }

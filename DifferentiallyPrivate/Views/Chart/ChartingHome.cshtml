@@ -11,6 +11,15 @@
         $(document).ready(function () {
             HideLoading();
             HideChartInput();
+            $("#deltaInput").hide();
+            $(".noiseType").change(function () {//FIX THIS STUFF
+                if ($(this).val() == "gaussian") {
+                    $("#deltaInput").show();
+                }
+                else {
+                    $("#deltaInput").hide();
+                }
+            });
         });
 
         function ShowChartInput() {
@@ -35,16 +44,17 @@
     </script>
 
     <div id="chartsAdded">
-        @if (Model.allCharts.Count > 1) //If number of charts is 1, only the new unedited chart exists
+        @if (Model.allHomeCharts.Count > 1) //If number of charts is 1, only the new unedited chart exists
         {
-            for (int i = 0; i <= Model.allCharts.Count - 2; i++) //Trim off new unedited chart model - default values (not added by user)
+            for (int i = 0; i <= Model.allHomeCharts.Count - 2; i++) //Trim off new unedited chart model - default values (not added by user)
             {
-                <p>Chart ID - @Model.allCharts[i].id: Query(@(Model.allCharts[i].queryType_input), @(Model.allCharts[i].noiseType_input))
-                    @(Model.allCharts[i].iterations_input) iterations; 
-                    @(Model.allCharts[i].binCount_input) bins;
-                    ε = @(Model.allCharts[i].epsilon_input);
-                    δ = @(Model.allCharts[i].delta_input) [Gaussian only];
-                    data = {@(Model.allCharts[i].data_input)}
+                <p>Chart ID - @Model.allHomeCharts[i].id: Query(@(Model.allHomeCharts[i].queryType_input), @(Model.allHomeCharts[i].noiseType_input))
+                    @(Model.allHomeCharts[i].iterations_input) iterations; 
+                    @(Model.allHomeCharts[i].binCount_input) bins;
+                    ε = @(Model.allHomeCharts[i].epsilon_input);
+                    δ = @(Model.allHomeCharts[i].delta_input) [Gaussian only];
+                    Category = {@(Model.allHomeCharts[i].data_cat_input)};
+                    Timespan = {@(Model.allHomeCharts[i].timespan_input)}
                 </p>
             }
         }
@@ -55,24 +65,28 @@
     </div>
     
     <input type="button" value="Add Query" onclick="ShowChartInput()" class="mainButton" />
-
-    @using (Ajax.BeginForm("ChartingSimple", "Chart", new AjaxOptions
+    @using (Html.BeginForm("ChartingHome", "Chart", FormMethod.Get))
+    {
+        <input type="submit" value="Clear All" class="mainButton" />
+    }
+    @using (Ajax.BeginForm("ChartingHome", "Chart", new AjaxOptions
     {
     UpdateTargetId = "MainChart",
     OnBegin = "return ShowLoading()",
     OnSuccess = "return HideLoading()"
     }))
     {
-        for (int i = 0; i < Model.allCharts.Count - 1; i++)
+        for (int i = 0; i < Model.allHomeCharts.Count - 1; i++)
         {
-            @Html.HiddenFor(c => Model.allCharts[i].binCount_input)
-            @Html.HiddenFor(c => Model.allCharts[i].data_input)
-            @Html.HiddenFor(c => Model.allCharts[i].epsilon_input)
-            @Html.HiddenFor(c => Model.allCharts[i].iterations_input)
-            @Html.HiddenFor(c => Model.allCharts[i].queryType_input)
-            @Html.HiddenFor(c => Model.allCharts[i].noiseType_input)
-            @Html.HiddenFor(c => Model.allCharts[i].delta_input)
-            @Html.HiddenFor(c => Model.allCharts[i].id)
+            @Html.HiddenFor(c => Model.allHomeCharts[i].binCount_input)
+            @Html.HiddenFor(c => Model.allHomeCharts[i].data_cat_input)
+            @Html.HiddenFor(c => Model.allHomeCharts[i].timespan_input)
+            @Html.HiddenFor(c => Model.allHomeCharts[i].epsilon_input)
+            @Html.HiddenFor(c => Model.allHomeCharts[i].iterations_input)
+            @Html.HiddenFor(c => Model.allHomeCharts[i].queryType_input)
+            @Html.HiddenFor(c => Model.allHomeCharts[i].noiseType_input)
+            @Html.HiddenFor(c => Model.allHomeCharts[i].delta_input)
+            @Html.HiddenFor(c => Model.allHomeCharts[i].id)
         }
         <input id="submit" type="submit" value="Generate Query Charts" class="mainButton" />
     }
@@ -85,23 +99,24 @@
     </div>
     
     <div id="chartInput">
-        @using (Html.BeginForm("ChartingSimple", "Chart", FormMethod.Post))
+        @using (Html.BeginForm("ChartingHome", "Chart", FormMethod.Post))
         {
-            //if (Model.allCharts.Count > 1)
+            //if (Model.allHomeCharts.Count > 1)
             //{
-                for (int i = 0; i < Model.allCharts.Count; i++)
+                for (int i = 0; i < Model.allHomeCharts.Count; i++)
                 {
-                    if (Model.allCharts[i].id != Model.allCharts.Count - 1)
+                    if (Model.allHomeCharts[i].id != Model.allHomeCharts.Count - 1)
                     {
-                        @Html.HiddenFor(c => Model.allCharts[i].binCount_input)
-                        @Html.HiddenFor(c => Model.allCharts[i].data_input)
-                        @Html.HiddenFor(c => Model.allCharts[i].epsilon_input)
-                        @Html.HiddenFor(c => Model.allCharts[i].iterations_input)
-                        @Html.HiddenFor(c => Model.allCharts[i].queryType_input)
-                        @Html.HiddenFor(c => Model.allCharts[i].noiseType_input)
-                        @Html.HiddenFor(c => Model.allCharts[i].delta_input)
+                        @Html.HiddenFor(c => Model.allHomeCharts[i].binCount_input)
+                        @Html.HiddenFor(c => Model.allHomeCharts[i].data_cat_input)
+                        @Html.HiddenFor(c => Model.allHomeCharts[i].timespan_input)
+                        @Html.HiddenFor(c => Model.allHomeCharts[i].epsilon_input)
+                        @Html.HiddenFor(c => Model.allHomeCharts[i].iterations_input)
+                        @Html.HiddenFor(c => Model.allHomeCharts[i].queryType_input)
+                        @Html.HiddenFor(c => Model.allHomeCharts[i].noiseType_input)
+                        @Html.HiddenFor(c => Model.allHomeCharts[i].delta_input)
                     }
-                    @Html.HiddenFor(c => Model.allCharts[i].id)
+                    @Html.HiddenFor(c => Model.allHomeCharts[i].id)
                 }
             //}
             <img src="~/Content/img/logo.png" width="50px" />
@@ -109,76 +124,76 @@
             <table>
                 <tr>
                     <td>
-                        @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].iterations_input)
+                        @Html.LabelFor(c => Model.allHomeCharts[Model.allHomeCharts.Count - 1].iterations_input)
                     </td>
                     <td>
-                        @Html.TextBoxFor(c => Model.allCharts[Model.allCharts.Count - 1].iterations_input, new { @class = "mainTextbox" })
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].epsilon_input)
-                    </td>
-                    <td>
-                        @Html.TextBoxFor(c => Model.allCharts[Model.allCharts.Count - 1].epsilon_input, new { @class = "mainTextbox" })
+                        @Html.TextBoxFor(c => Model.allHomeCharts[Model.allHomeCharts.Count - 1].iterations_input, new { @class = "mainTextbox" })
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].binCount_input)
+                        @Html.LabelFor(c => Model.allHomeCharts[Model.allHomeCharts.Count - 1].epsilon_input)
                     </td>
                     <td>
-                        @Html.TextBoxFor(c => Model.allCharts[Model.allCharts.Count - 1].binCount_input, new { @class = "mainTextbox" })
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].data_input)
-                    </td>
-                    <td>
-                        @Html.TextBoxFor(c => Model.allCharts[Model.allCharts.Count - 1].data_input, new { @class = "mainTextbox" })
+                        @Html.TextBoxFor(c => Model.allHomeCharts[Model.allHomeCharts.Count - 1].epsilon_input, new { @class = "mainTextbox" })
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].queryType_input)
+                        @Html.LabelFor(c => Model.allHomeCharts[Model.allHomeCharts.Count - 1].binCount_input)
                     </td>
                     <td>
-                        @Html.RadioButtonFor(c => Model.allCharts[Model.allCharts.Count - 1].queryType_input, "avg")
-                        <label class="formLabel">Average</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        @Html.RadioButtonFor(c => Model.allCharts[Model.allCharts.Count - 1].queryType_input, "med")
-                        <label class="formLabel">Median</label>
+                        @Html.TextBoxFor(c => Model.allHomeCharts[Model.allHomeCharts.Count - 1].binCount_input, new { @class = "mainTextbox" })
                     </td>
                 </tr>
+
                 <tr>
                     <td>
-                        @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].noiseType_input)
+                        @Html.LabelFor(c => Model.allHomeCharts[Model.allHomeCharts.Count - 1].queryType_input)
                     </td>
                     <td>
-                        @Html.RadioButtonFor(c => Model.allCharts[Model.allCharts.Count - 1].noiseType_input, "laplace")
-                        <label class="formLabel">Laplace</label>
+                        @Html.DropDownListFor(c => Model.allHomeCharts[Model.allHomeCharts.Count - 1].queryType_input, 
+                                              new SelectList(Model.allHomeCharts[Model.allHomeCharts.Count - 1].query_types, "Value", "Text"))
                     </td>
                 </tr>
+
                 <tr>
                     <td>
+                        @Html.LabelFor(c => Model.allHomeCharts[Model.allHomeCharts.Count - 1].data_cat_input)
                     </td>
                     <td>
-                        @Html.RadioButtonFor(c => Model.allCharts[Model.allCharts.Count - 1].noiseType_input, "gaussian")
-                        <label class="formLabel">Gaussian</label>
+                        @Html.DropDownListFor(c => Model.allHomeCharts[Model.allHomeCharts.Count - 1].data_cat_input, 
+                                              new SelectList(Model.allHomeCharts[Model.allHomeCharts.Count - 1].data_cats, "Value", "Text"))
                     </td>
                 </tr>
+
                 <tr>
                     <td>
-                        @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].delta_input)
+                        @Html.LabelFor(c => Model.allHomeCharts[Model.allHomeCharts.Count - 1].timespan_input)
                     </td>
                     <td>
-                        @Html.TextBoxFor(c => Model.allCharts[Model.allCharts.Count - 1].delta_input, new { @class = "mainTextbox" })
+                        @Html.DropDownListFor(c => Model.allHomeCharts[Model.allHomeCharts.Count - 1].timespan_input, 
+                                              new SelectList(Model.allHomeCharts[Model.allHomeCharts.Count - 1].timespans, "Value", "Text"))
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        @Html.LabelFor(c => Model.allHomeCharts[Model.allHomeCharts.Count - 1].noiseType_input)
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(c => Model.allHomeCharts[Model.allHomeCharts.Count - 1].noiseType_input,
+                                              new SelectList(Model.allHomeCharts[Model.allHomeCharts.Count - 1].noise_types, "Value", "Text"),
+                                              new { @class = "noiseType" })
+                    </td>
+                </tr>
+
+                <tr id="deltaInput">
+                    <td>
+                        @Html.LabelFor(c => Model.allHomeCharts[Model.allHomeCharts.Count - 1].delta_input)
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(c => Model.allHomeCharts[Model.allHomeCharts.Count - 1].delta_input, new { @class = "mainTextbox" })
                     </td>
                 </tr>
                 <tr style="padding-top:10px;">
