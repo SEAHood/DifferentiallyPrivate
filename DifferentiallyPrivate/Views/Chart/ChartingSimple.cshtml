@@ -21,6 +21,13 @@
                 }
             });
 
+
+            $(".xButton").mouseover(function () {
+                $(this).attr("src", "@Url.Content("~/Content/img/closeS.png")");
+            });
+            $(".xButton").mouseout(function () {
+                $(this).attr("src", "@Url.Content("~/Content/img/closeUS.png")");
+            });
             
         });
 
@@ -48,15 +55,45 @@
     <div id="chartsAdded">
         @if (Model.allCharts.Count > 1) //If number of charts is 1, only the new unedited chart exists
         {
-            for (int i = 0; i <= Model.allCharts.Count - 2; i++) //Trim off new unedited chart model - default values (not added by user)
+            for (int i = 0; i < Model.allCharts.Count - 1; i++) //Trim off new unedited chart model - default values (not added by user)
             {
-                <p>Chart ID - @Model.allCharts[i].id: Query(@(Model.allCharts[i].queryType_input), @(Model.allCharts[i].noiseType_input))
-                    @(Model.allCharts[i].iterations_input) iterations; 
-                    @(Model.allCharts[i].binCount_input) bins;
-                    ε = @(Model.allCharts[i].epsilon_input);
-                    δ = @(Model.allCharts[i].delta_input) [Gaussian only];
-                    data = {@(Model.allCharts[i].data_input)}
-                </p>
+                <div class="queryListing">
+		            <div class="queryHeading">
+			            <h4 style="float:left;color:cadetblue;">Chart @Model.allCharts[i].id</h4>
+			            @using (Html.BeginForm("ChartingSimple", "Chart", FormMethod.Post))
+                        {
+                            for (int j = 0; j < Model.allCharts.Count - 1; j++)
+                            {
+                                @Html.HiddenFor(c => Model.allCharts[j].binCount_input)
+                                @Html.HiddenFor(c => Model.allCharts[j].data_input)
+                                @Html.HiddenFor(c => Model.allCharts[j].epsilon_input)
+                                @Html.HiddenFor(c => Model.allCharts[j].iterations_input)
+                                @Html.HiddenFor(c => Model.allCharts[j].queryType_input)
+                                @Html.HiddenFor(c => Model.allCharts[j].noiseType_input)
+                                @Html.HiddenFor(c => Model.allCharts[j].delta_input)
+                                @Html.HiddenFor(c => Model.allCharts[j].id)
+                            }
+                            @Html.Hidden("removeId", i)
+                            <input type="submit" class="xButton" value="" />
+                            
+                        }
+		            </div>
+		            <div class="queryBody">
+                        @if (Model.allCharts[i].queryType_input == "avg")
+                        {
+			                <text>Average query</text>
+                        }
+                        else
+                        {
+			                <text>Median query</text>
+                        }
+
+                        using @(Model.allCharts[i].noiseType_input).<br />
+			            @(Model.allCharts[i].iterations_input) iterations; @(Model.allCharts[i].binCount_input) bins<br/>
+			            ε = @(Model.allCharts[i].epsilon_input); δ = @(Model.allCharts[i].delta_input) [Gaussian only]<br/>
+			            data = {@(Model.allCharts[i].data_input)}
+		            </div>
+	            </div>
             }
         }
         else
@@ -64,7 +101,8 @@
             <p>No queries added.</p>
         }
     </div>
-    
+    <div style="clear:both"></div>
+
     <input type="button" value="Add Query" onclick="ShowChartInput()" class="mainButton" />
     @using (Html.BeginForm("ChartingSimple", "Chart", FormMethod.Get))
     {
@@ -72,9 +110,9 @@
     }
     @using (Ajax.BeginForm("ChartingSimple", "Chart", new AjaxOptions
     {
-    UpdateTargetId = "MainChart",
-    OnBegin = "return ShowLoading()",
-    OnSuccess = "return HideLoading()"
+        UpdateTargetId = "MainChart",
+        OnBegin = "return ShowLoading()",
+        OnSuccess = "return HideLoading()"
     }))
     {
         for (int i = 0; i < Model.allCharts.Count - 1; i++)
@@ -107,10 +145,8 @@
         {
             //if (Model.allCharts.Count > 1)
             //{
-                for (int i = 0; i < Model.allCharts.Count; i++)
-                {
-                    if (Model.allCharts[i].id != Model.allCharts.Count - 1)
-                    {
+            for (int i = 0; i < Model.allCharts.Count - 1; i++)
+            {
                         @Html.HiddenFor(c => Model.allCharts[i].binCount_input)
                         @Html.HiddenFor(c => Model.allCharts[i].data_input)
                         @Html.HiddenFor(c => Model.allCharts[i].epsilon_input)
@@ -118,9 +154,10 @@
                         @Html.HiddenFor(c => Model.allCharts[i].queryType_input)
                         @Html.HiddenFor(c => Model.allCharts[i].noiseType_input)
                         @Html.HiddenFor(c => Model.allCharts[i].delta_input)
-                    }
-                    @Html.HiddenFor(c => Model.allCharts[i].id)
-                }
+                        @Html.HiddenFor(c => Model.allCharts[i].id)
+                   
+            }
+            @Html.HiddenFor(c => Model.allCharts[Model.allCharts.Count - 1].id)
             //}
             <img src="~/Content/img/logo.png" width="50px" />
             <h4>New Query</h4>
@@ -173,7 +210,7 @@
                         @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].noiseType_input)
                     </td>
                     <td>
-                        @Html.DropDownListFor(c => Model.allCharts[Model.allCharts.Count - 1].noiseType_input, 
+                        @Html.DropDownListFor(c => Model.allCharts[Model.allCharts.Count - 1].noiseType_input,
                                               new SelectList(Model.allCharts[Model.allCharts.Count - 1].noise_types, "Value", "Text"),
                                               new { @class = "noiseType" })
                     </td>

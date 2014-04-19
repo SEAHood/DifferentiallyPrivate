@@ -145,6 +145,9 @@
     <Content Include="Content\css\default.css" />
     <Content Include="Content\img\agsquare.png" />
     <Content Include="Content\img\agsquare_%402X.png" />
+    <Content Include="Content\img\closeP.png" />
+    <Content Include="Content\img\closeS.png" />
+    <Content Include="Content\img\closeUS.png" />
     <Content Include="Content\img\dp.png" />
     <Content Include="Content\img\dplogo.png" />
     <Content Include="Content\img\favicon.ico" />

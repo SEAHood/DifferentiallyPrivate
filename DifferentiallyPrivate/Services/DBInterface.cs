@@ -11,6 +11,7 @@ namespace DifferentiallyPrivate.Services
     public class DBInterface
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["RemoteSmartStarDB"].ConnectionString;
+        //private string connectionString = ConfigurationManager.ConnectionStrings["LocalSmartStarDB"].ConnectionString;
 
         public DBInterface()
         {

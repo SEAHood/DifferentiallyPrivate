@@ -60,6 +60,8 @@ namespace DifferentiallyPrivate.Models
         private int noiseType;
         private double delta;
 
+        public bool active { get; set; }
+
         public ChartModel()
         {
 
@@ -67,6 +69,8 @@ namespace DifferentiallyPrivate.Models
 
         public ChartModel(int _id)
         {
+            active = true;
+
             noise_types = new[] {
                 new SelectListItem { Value = "laplace", Text = "Laplace" },
                 new SelectListItem { Value = "gaussian", Text = "Gaussian" }
