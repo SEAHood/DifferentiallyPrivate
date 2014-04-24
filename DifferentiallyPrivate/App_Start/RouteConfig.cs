@@ -13,66 +13,61 @@ namespace DifferentiallyPrivate
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            //Route for root page
             routes.MapRoute(
                 name: "Home",
                 url: "",
                 defaults: new { controller = "Home", action = "Index" }
             );
 
+            //Route for login
             routes.MapRoute(
                 name: "Login",
                 url: "login",
                 defaults: new { controller = "Home", action = "Login" }
             );
 
+            //Route for logout
             routes.MapRoute(
                 name: "Logout",
                 url: "logout",
                 defaults: new { controller = "Home", action = "Logout" }
             );
 
+            //Route for about page
             routes.MapRoute(
                 name: "WhatIs",
                 url: "whatis",
                 defaults: new { controller = "Home", action = "WhatIs" }
             );
 
+            //Route for how to page
             routes.MapRoute(
                 name: "HowTo",
                 url: "howto",
                 defaults: new { controller = "Home", action = "HowTo" }
             );
 
+            //Route for charting page
             routes.MapRoute(
                 name: "Charting",
                 url: "charting",
                 defaults: new { controller = "Home", action = "Charting" }
             );
 
+            //Route for simple charting
             routes.MapRoute(
                 name: "ChartingSimple",
                 url: "charting/simple",
                 defaults: new { controller = "Chart", action = "ChartingSimple" }
             );
 
+            //Route for home charting
             routes.MapRoute(
                 name: "ChartingHome",
                 url: "charting/home",
                 defaults: new { controller = "Chart", action = "ChartingHome" }
             );
-
-            routes.MapRoute(
-                name: "ASync",
-                url: "async",
-                defaults: new { controller = "Home", action = "ASync"}
-            );
-
-            routes.MapRoute(
-                name: "Test",
-                url: "async",
-                defaults: new { controller = "Home", action = "Test" }
-            );
-
         }
     }
 }

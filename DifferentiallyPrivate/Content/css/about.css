@@ -1,0 +1,47 @@
+﻿.centred {
+    width:65%;
+    margin-left:auto;
+    margin-right:auto;
+    text-align: center;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.subtitle {
+    font-size:0.8em;
+}
+
+#mainImage {
+    width:220px;
+    margin-right:15px;
+    border-radius:5px;
+    vertical-align:top;
+    float:left;
+}
+
+#BPtable {
+    margin-left:auto;
+    margin-right:auto;
+    margin-bottom:10px;
+}
+
+table, th, td {
+border-collapse:collapse;
+    padding:5px;
+    border:1px solid black;
+}
+
+th {
+    background-color: cadetblue;
+}
+
+h4 {
+    margin-top:25px;
+    margin-bottom:0;
+}
+
+p {
+    margin-top: 5px;
+}

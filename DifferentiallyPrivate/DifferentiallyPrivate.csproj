@@ -141,6 +141,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="Content\css\about.css" />
     <Content Include="Content\img\ajax-loader.gif" />
     <Content Include="Content\css\default.css" />
     <Content Include="Content\img\agsquare.png" />
@@ -149,9 +150,15 @@
     <Content Include="Content\img\closeS.png" />
     <Content Include="Content\img\closeUS.png" />
     <Content Include="Content\img\dp.png" />
+    <Content Include="Content\img\DPExample1.png" />
+    <Content Include="Content\img\DPExample2.png" />
+    <Content Include="Content\img\DPImage2.png" />
     <Content Include="Content\img\dplogo.png" />
     <Content Include="Content\img\favicon.ico" />
+    <Content Include="Content\img\IOT.jpg" />
+    <Content Include="Content\img\IOT.png" />
     <Content Include="Content\img\logo.png" />
+    <Content Include="Content\img\DPImage.png" />
     <Content Include="Content\js\highcharts.js" />
     <Content Include="Content\js\jquery-1.11.0.min.js" />
     <Content Include="Global.asax" />

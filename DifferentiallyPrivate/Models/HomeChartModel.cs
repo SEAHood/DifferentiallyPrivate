@@ -13,9 +13,13 @@ namespace DifferentiallyPrivate.Models
 {
     public class HomeChartModel
     {
+        //Chart ID
         public int id { get; set; }
+
+        //Chart
         public DotNet.Highcharts.Highcharts highchart;
 
+        //Form fields
         [Required]
         [DataType(DataType.Text)]
         [Display(Name = "Query Type: ")]

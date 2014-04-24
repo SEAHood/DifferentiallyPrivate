@@ -15,18 +15,10 @@ namespace DifferentiallyPrivate.Controllers
 {
     public class ChartController : Controller
     {
-        //
-        // GET: /Chart/
-
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-
+        //GET : Create new MultiChart and return to view
         [Authorize]
         [HttpGet]
-        public ActionResult ChartingSimple() //RETURN NEW MODEL WITH EMPTY CHART
+        public ActionResult ChartingSimple()
         {
             MultiChart mc = new MultiChart();
             ChartModel chart = new ChartModel(0);
@@ -34,13 +26,14 @@ namespace DifferentiallyPrivate.Controllers
             return View(mc);
         }
 
-
+        //POST : Route to appropriate functionality
         [Authorize]
         [HttpPost]
         public ActionResult ChartingSimple(MultiChart mc)
         {
-            if (Request.IsAjaxRequest()) //BUILD CHARTS IN ALLCHARTS
+            if (Request.IsAjaxRequest()) //AJAX Request - Initialise and build charts
             {
+                //Build charts
                 foreach (var chart in mc.allCharts)
                 {
                     if (chart.IsValid())
@@ -50,26 +43,30 @@ namespace DifferentiallyPrivate.Controllers
                     }
                 }
 
+                //Return MultiChart (built) to view
                 ChartModel cm = new ChartModel(mc.allCharts.Count);
                 mc.allCharts.Add(cm);
                 return PartialView("_Chart", mc);
             }
-            else //ADD CHART TO ALLCHARTS
+            else //Non-AJAX Request - Remove or add chart
             {
-                if (Request["removeId"] != null) //Remove query, 1 form key = id of removed query
+                if (Request["removeId"] != null) //Remove chart - Request key = id of removed chart
                 {
+                    //Clear model state to avoid cached values
                     ModelState.Clear();
+
+                    //Remove chart
                     int id = Int32.Parse(Request["removeId"].ToString());
                     mc.allCharts.RemoveAt(id);
-                    //mc.UpdateIDs(); //Update IDs since one was removed
 
+                    //If no charts exist, recreate first chart (for editing)
                     if (mc.allCharts.Count == 0)
                     {
                         ChartModel chart = new ChartModel(0);
                         mc.allCharts.Add(chart);
                         return View(mc);
                     }
-                    else
+                    else //Otherwise add a new chart (for editing)
                     {
                         int newId = mc.allCharts.Last().id + 1;
                         ChartModel chart = new ChartModel(newId);
@@ -77,10 +74,11 @@ namespace DifferentiallyPrivate.Controllers
                         return View(mc);
                     }
                 }
-                else
+                else //Add chart
                 {
-                    if (mc.allCharts.Last().IsValid()) //Added chart is valid - add new chart to be edited
+                    if (mc.allCharts.Last().IsValid()) //Added chart is valid
                     {
+                        //Add new chart (for editing) and return to view
                         ChartModel cm = new ChartModel(mc.allCharts.Last().id + 1);
                         mc.allCharts.Add(cm);
                         foreach (var c in mc.allCharts)
@@ -91,9 +89,14 @@ namespace DifferentiallyPrivate.Controllers
                     }
                     else //Added chart is invalid
                     {
-                        ModelState.AddModelError("", "Chart values invalid!");
+                        //Clear model state to avoid cached values
+                        ModelState.Clear();
+
+                        //Return error, remove invalid chart, add new chart (for editing)
+                        ModelState.AddModelError("", "Cannot add query - values invalid!");
+                        int lastID = mc.allCharts.Last().id;
                         mc.allCharts.Remove(mc.allCharts.Last());
-                        ChartModel cm = new ChartModel(mc.allCharts.Last().id);
+                        ChartModel cm = new ChartModel(lastID);
                         mc.allCharts.Add(cm);
                         return View(mc);
                     }
@@ -106,6 +109,7 @@ namespace DifferentiallyPrivate.Controllers
             return View();
         }
 
+        //GET : Create new MultiChart and return to view
         [Authorize]
         [HttpGet]
         public ActionResult ChartingHome()
@@ -116,22 +120,21 @@ namespace DifferentiallyPrivate.Controllers
             return View(mc);
         }
 
+        //POST : Route to appropriate functionality
         [Authorize]
         [HttpPost]
         public ActionResult ChartingHome(MultiChart mc)
         {
-            if (Request.IsAjaxRequest()) //BUILD CHARTS IN ALLCHARTS
+            if (Request.IsAjaxRequest()) //AJAX Request - Initialise and build charts
             {
                 foreach (var chart in mc.allHomeCharts)
                 {
-                    //GET DATA FROM DATABASE **TO DO**
+                    //Get data from database and set chart data
                     DBInterface DBI = new DBInterface();
                     double[] data = DBI.GetDoublesFromDB(chart.data_cat_input, chart.timespan_input);
-
-                    while (data == null) { }
-
                     chart.setData(data);
 
+                    //Build charts
                     if (chart.IsValid())
                     {
                         chart.InitChart();
@@ -139,26 +142,30 @@ namespace DifferentiallyPrivate.Controllers
                     }
                 }
 
+                //Return MultiChart (built) to view
                 HomeChartModel cm = new HomeChartModel(mc.allHomeCharts.Count);
                 mc.allHomeCharts.Add(cm);
                 return PartialView("_Chart", mc);
             }
-            else 
+            else //Non-AJAX Request - Remove or add chart
             {
-                if (Request["removeId"] != null) //Remove query, 1 form key = id of removed query
+                if (Request["removeId"] != null) //Remove chart - Request key = id of removed chart
                 {
+                    //Clear model state to avoid cached values
                     ModelState.Clear();
+
+                    //Remove chart
                     int id = Int32.Parse(Request["removeId"].ToString());
                     mc.allHomeCharts.RemoveAt(id);
-                    //mc.UpdateIDs(); //Update IDs since one was removed
 
+                    //If no charts exist, recreate first chart (for editing)
                     if (mc.allHomeCharts.Count == 0)
                     {
                         HomeChartModel homeChart = new HomeChartModel(0);
                         mc.allHomeCharts.Add(homeChart);
                         return View(mc);
                     }
-                    else
+                    else //Otherwise add new chart (for editing)
                     {
                         int newId = mc.allHomeCharts.Last().id + 1;
                         HomeChartModel homeChart = new HomeChartModel(newId);
@@ -166,11 +173,11 @@ namespace DifferentiallyPrivate.Controllers
                         return View(mc);
                     }
                 }
-                else
+                else //Add chart
                 {
-                    //ADD CHART TO ALLCHARTS
-                    if (mc.allHomeCharts.Last().IsValid()) //Added chart is valid - add new chart to be edited
+                    if (mc.allHomeCharts.Last().IsValid()) //Added chart is valid
                     {
+                        //Add new chart to be edited
                         HomeChartModel cm = new HomeChartModel(mc.allHomeCharts.Last().id + 1);
                         mc.allHomeCharts.Add(cm);
                         foreach (var chart in mc.allHomeCharts)
@@ -181,6 +188,7 @@ namespace DifferentiallyPrivate.Controllers
                     }
                     else //Added chart is invalid
                     {
+                        //Return error, remove invalid chart, add new chart (for editing)
                         ModelState.AddModelError("", "Chart values invalid!");
                         mc.allHomeCharts.Remove(mc.allHomeCharts.Last());
                         HomeChartModel cm = new HomeChartModel(mc.allHomeCharts.Last().id);
@@ -190,7 +198,5 @@ namespace DifferentiallyPrivate.Controllers
                 }
             }
         }
-
-        
     }
 }

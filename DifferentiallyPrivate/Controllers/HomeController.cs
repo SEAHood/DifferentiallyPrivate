@@ -14,31 +14,34 @@ namespace DifferentiallyPrivate.Controllers
 {
     public class HomeController : Controller
     {
+        //Root page
         public ActionResult Index()
         {
             ViewBag.Message = "Welcome";
             return View();
         }
 
+        //GET : Login page, return login view
         [HttpGet]
         public ActionResult Login()
         {
             return View();
         }
 
+        //POST : Attempt to login
         [HttpPost]
         public ActionResult Login(Models.User user)
         {
             if (ModelState.IsValid)
             {
+                //Check if user is valid (username + pwd matches DB)
                 if (user.IsValid())
                 {
-                    //["loggedin"] = true;
+                    //Set authentication for user and redirect to home
                     FormsAuthentication.SetAuthCookie(user.UserName, false);
-                    //Response.Redirect("/");
                     return RedirectToAction("Index", "Home");
                 }
-                else
+                else //Invalid user
                 {
                     ModelState.AddModelError("", "Login details are incorrect!");
                 }
@@ -46,12 +49,15 @@ namespace DifferentiallyPrivate.Controllers
             return View(user);
         }
 
+        //Logout method
         public ActionResult Logout()
         {
+            //Sign authentication out, redirect to home
             FormsAuthentication.SignOut();
             return RedirectToAction("Index", "Home");
         }
 
+        //About page
         [Authorize]
         public ActionResult WhatIs()
         {
@@ -59,6 +65,7 @@ namespace DifferentiallyPrivate.Controllers
             return View();
         }
 
+        //How To page
         [Authorize]
         public ActionResult HowTo()
         {
@@ -66,11 +73,11 @@ namespace DifferentiallyPrivate.Controllers
             return View();
         }
 
+        //Charting page
         [Authorize]
         public ActionResult Charting()
         {
             ViewBag.Message = "Charting";
-
             return View();
         }        
     }

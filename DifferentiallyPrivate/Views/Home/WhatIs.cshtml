@@ -2,16 +2,138 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
+<link rel="stylesheet" type="text/css" href="~/Content/css/about.css">
 <div id="viewContent">
     <h3>@ViewBag.Message</h3>
-    <p>
-        Proin at convallis leo, et iaculis sapien. Etiam at tortor eget nulla consectetur tempor non at eros. Quisque et sem nisi. Aenean lacus quam, convallis a convallis in, placerat aliquam enim. Maecenas tincidunt enim mi, et dapibus lacus rutrum et. Quisque lobortis odio quis ipsum aliquet condimentum. Curabitur ut justo euismod, feugiat eros sed, ultricies nibh. Vivamus eu euismod urna.
-    </p>
-    <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id porttitor lectus, a facilisis purus. Integer lobortis gravida tortor, nec gravida felis. Donec eget elit magna. Aenean eget porttitor dui. Donec feugiat sapien nec turpis sagittis feugiat. Nulla a mi sollicitudin tellus consectetur rutrum ut interdum risus. Vestibulum euismod, libero at malesuada euismod, orci augue ultrices urna, non vulputate leo libero eget lacus.
-    </p>
-    <p>
-        Pellentesque sollicitudin ligula eget sapien interdum consequat. Mauris sapien sem, feugiat ut condimentum in, posuere quis eros. Vivamus consequat, dui in congue accumsan, nisl tellus viverra tortor, vel laoreet lectus leo quis nulla. Duis sed velit pharetra, molestie nunc et, eleifend enim. Ut ac eros id sem posuere blandit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare nunc ut pharetra ultricies.
-    </p>
+    
+    
+    <h4>Concept & Definition</h4>
+    <!--Image obtained and altered from http://startups.co.uk/wp-content/uploads/2013/09/Internet_of_things_crop.jpg -->
+    <p><img src="~/Content/img/IOT.png" id="mainImage"/>Our modern lives are defined by data; every minute more than 2 million Google searches are performed, more than 1.8 million things 
+        are liked on Facebook, and 72+ hours of video is uploaded to YouTube (increasing every day!). 
+        The presence of computers in our daily lives has led to the storage and utilisation of extensive and complex data covering 
+        anything from medical and police records, to second-by-second statistics of home temperature and power usage.</p>
+
+    <p>Data is everywhere, and with our planet moving towards an “Internet of Things” (i.e. objects connecting to the internet, such as 
+        light bulbs or flower pots), the future will bring with it huge amounts more.  The amount of data that is continuously being generated 
+        provides us with an almost real-time data representation of our world, allowing us to react to situations and analyse our 
+        planet with increasing efficiency, accuracy, and efficiency.</p>
+
+    <p>However, this data can be used for malicious purposes if it’s not made sufficiently private; access to the data can reveal huge 
+        amounts of information about the individual’s daily habits and routines.  An example of this would be attackers determining 
+        statistically the best time to break into a home based on data gathered about an individual – what hours they work, if they 
+        often take holidays (if so, for how long), and various other metrics that allow attackers to build up a profile of someone and 
+        find the weak spots.</p>
+
+    <p>Inherently, privacy is a key priority in our “Internet of Things”.  The most obvious way to make a set of data private is to 
+        essentially erase it – if there’s no data left, attackers have nothing to work from.  This isn’t particularly useful however, 
+        as the data then becomes useless to parties who have no malicious intent.  Evidently there has arisen a trade-off of utility for 
+        privacy, with privacy increasing as utility decreases.  A common way of providing privacy to data is reducing the amount of 
+        information that can be ascertained through queries – statistical databases intend to provide maximal utility, whilst protecting the 
+        identities of individuals in the data, normally by allowing only aggregate methods to be performed, and not allowing direct access to 
+        the database behind.  However these databases are still open to attacks through various means.</p>
+    
+    <p>A query or result is said to be differentially private if the removal (or addition) of one record has <i>limited impact</i> on the 
+        overall result.  This definition is formalised by <a href="http://www.cs.ucdavis.edu/~franklin/ecs289/2010/dwork_2008.pdf">Cynthia 
+        Dwork</a> (slightly altered) as follows:</p>
+    
+    <div class="centred"> 
+        <span class="bold">Definition</span> - A random function K (which adds noise to the data) is (ε, δ)-differentially private if 
+        for every two data sets (D1, D2) differing by one element, and for every possible observation S ⊆ Range (K):<br /><br />
+        <span class="bold">Pr⁡[K(D<sub>1</sub>) ∈ S] ≤ exp⁡(ε) × Pr⁡[K(D<sub>2</sub>) ∈ S] + δ</span>
+    </div>
+
+    <h4>In Practice</h4>
+    <p>Let’s start by considering δ = 0.  To illustrate how differential privacy protects data, take a list of numbers from 1 to 10 (D1):</p>
+    
+    <div class="centred"><span class="bold">D<sub>1</sub> = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}</span></div>
+
+    <p>Taking the normal average of D1 requires taking the sum of the list and dividing by the number of values; the average of D1 
+        would be <span class="bold">5.5</span>.  Now, suppose we remove the 2 from the list to produce a new data set (D2):</p>
+
+    <div class="centred"><span class="bold">D<sub>2</sub> = {1, 3, 4, 5, 6, 7, 8, 9, 10}</span></div>
+
+    <p>As you would imagine, taking the average of D2 will result in the slightly higher value of <span class="bold">~5.89</span>.  This 
+        reveals information about the data behind the scenes; one could imagine with a few removals it could be simple to deduce all of 
+        the values in D1, despite never having had direct access to it.</p>
+
+    <p>To put this example in the context of personal data, we can take an imaginary medical data table (see Table 1 below) that contains 
+        a list of people’s names, and their systolic blood pressure:</p>
+
+    <div class="centred">
+        <table id="BPtable">
+            <tr>
+                <th>Name</th>
+                <th>Systolic BP</th>
+            </tr>
+            <tr>
+                <td>Jim</td>
+                <td>119</td>
+            </tr>
+            <tr>
+                <td>Sue</td>
+                <td>145</td>
+            </tr>
+            <tr>
+                <td>Dave</td>
+                <td>90</td>
+            </tr>
+            <tr>
+                <td>Eric</td>
+                <td>92</td>
+            </tr>
+            <tr>
+                <td>Nancy</td>
+                <td>149</td>
+            </tr>
+        </table>
+        <span class="subtitle">Table 1: Individuals and their systolic blood pressure</span>
+    </div>
+
+    <p>Let’s say that we have no direct access to this data, but we are able to perform aggregate functions on it; if we take the average 
+        systolic BP for the entire cohort, we get <span class="bold">119</span>.  If we remove Dave from the data, we get an average 
+            of <span class="bold">126.25</span>; from this we can infer that Dave has a low systolic blood pressure compared to the 
+        average of the original cohort (the removal of his BP increased the average) – since the original average BP 
+        (<span class="bold">119</span>) is incidentally a normal blood pressure, we can make the assumption that Dave likely 
+        has hypotension, without ever seeing directly the BP associated with him.</p>
+
+    <p>When differential privacy is introduced to the queries, noise causes the results to not be exactly correct.  This means that, referring 
+        back to Table 1, the average of the list has a probability (provided by the epsilon input) to be around <span class="bold">126.25</span>
+         – with the probability decreasing as epsilon decreases.  Similarly, the average of the dataset with one record removed has a 
+        probability of being around <span class="bold">119</span>.  This has an effect on both the accuracy and privacy of the data by 
+        covering up true values and only providing a probability.</p>
+
+    <p>Imagine we have a differentially private average function, which provides Laplace noise on a set of data, with the peak of the 
+        distribution being the true average (<span class="bold">126.25</span>).  In the context of the blood pressure example, we have the 
+        first query on the full dataset; our differentially private average query provides us with the result: <span class="bold">124</span>, 
+        found just below the peak of the distribution 
+        (see Figure 1).</p>
+ 
+    <div class="centred">
+        <img src="~/Content/img/DPExample1.png" />
+        <img src="~/Content/img/DPExample2.png" /><br />
+        <span class="subtitle">Figure 1 <i>(left)</i>: Laplace distribution around the true average on unaltered dataset.<br />
+            Figure 2 <i>(right)</i>: Laplace distribution around the true average on altered dataset (record removed)</span>
+    </div>
+
+    <p>Now that we have the ‘noisy average’ of the full dataset, we can remove a record as before, and run the query again, this time the 
+        distribution is centred on another average (<span class="bold">119</span>) (see Figure 2).  The differentially private function 
+        returns a value above the peak (by chance): <span class="bold">127</span> – interestingly, the average of the altered dataset appears 
+        greater than the average of the unaltered dataset, despite the fact that the actual average for the altered dataset is lower than the 
+        unaltered dataset.  This happens purely from the fact that there’s now a probability that lower or higher results from the actual 
+        average will be calculated, since noise has been added.  Here is where the privacy is preserved; previously we investigated the 
+        dataset using true averages and were able to discern information that was not there by removing records (the fact that Dave 
+        likely has hypotension).</p>
+
+    <p>Now, using differential privacy, we can’t tell for sure if Dave has hypotension, as repeated queries may be lower or higher than 
+        the noisy average of the unaltered dataset – meaning no true information can be inferred simply from comparison of these two datasets 
+        using a single query.</p>
+
+    <h4>Do It Yourself!</h4>
+    <p>Experiment with differential privacy using our <a href="~/Views/Home/Charting">charting tools</a>!</p>
+
+    <h4>Useful Links</h4>
+    <a href="http://research.microsoft.com/en-us/projects/pinq/">PINQ</a> - An extension of Microsoft's LINQ framework, provides differentially private querying<br />
+    <a href="http://research.microsoft.com/apps/pubs/default.aspx?id=64346">Original Differential Privacy Paper</a> - Cynthia Dwork, July 2006<br />
+    <a href="http://research.microsoft.com/pubs/80218/sigmod115-mcsherry.pdf">Original PINQ Paper</a> - Frank McSherry, July 2009
 </div>

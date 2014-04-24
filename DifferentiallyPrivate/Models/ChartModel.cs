@@ -14,9 +14,13 @@ namespace DifferentiallyPrivate.Models
 {
     public class ChartModel
     {
+        //Chart ID
         public int id { get; set; }
+
+        //Chart
         public DotNet.Highcharts.Highcharts highchart;
 
+        //Form fields
         [Required]
         [Display(Name = "Query Type: ")]
         public string queryType_input { get; set; }
@@ -52,6 +56,7 @@ namespace DifferentiallyPrivate.Models
         [Display(Name = "# of Bins: ")]
         public string binCount_input { get; set; }
 
+        //Data fields with true types
         private double[] data;
         private int iterations;
         private double epsilon;
@@ -60,15 +65,15 @@ namespace DifferentiallyPrivate.Models
         private int noiseType;
         private double delta;
 
-        public double actualResult { get; set; } //For actual (non-DP) average/median
+        //Actual result for (non-DP) average/median
+        public double actualResult { get; set; }
 
-        public ChartModel()
-        {
+        public ChartModel() { }
 
-        }
-
+        //Constructor - setup chart initially
         public ChartModel(int _id)
         {
+            //Set noise and query type arrays
             noise_types = new[] {
                 new SelectListItem { Value = "laplace", Text = "Laplace" },
                 new SelectListItem { Value = "gaussian", Text = "Gaussian" }
@@ -78,6 +83,7 @@ namespace DifferentiallyPrivate.Models
                 new SelectListItem { Value = "med", Text = "Median" }
             };
 
+            //Set chart ID
             id = _id;
 
             //Defaults
@@ -90,6 +96,7 @@ namespace DifferentiallyPrivate.Models
             delta_input = "0.0001";
         }
 
+        //Initialise chart
         public void InitChart()
         {
             string chartName = "chart" + id.ToString();
@@ -102,11 +109,13 @@ namespace DifferentiallyPrivate.Models
                     });
         }
 
+        //Validates the chart
+        //Returns true if valid, false otherwise
         public bool IsValid()
         {
             try
             {
-                //Data
+                //Data validation
                 data_input = data_input.Replace(" ", "");
 
                 string[] tokenisedData = data_input.Split(',');
@@ -118,22 +127,22 @@ namespace DifferentiallyPrivate.Models
                 }
                 data = data.OrderBy(x => x).ToArray();
 
-                //Iterations
+                //Iterations validation
                 iterations = Int32.Parse(iterations_input);
 
-                //Epsilon
+                //Epsilon validation
                 epsilon = Double.Parse(epsilon_input);
 
-                //Delta
+                //Delta validation
                 delta = Double.Parse(delta_input);
 
-                //Bins
+                //Bins validation
                 binCount = Int32.Parse(binCount_input);
 
-                //Query Type
+                //Query Type validation
                 queryType = queryType_input;
 
-                //Noise Type
+                //Noise Type validation
                 if (noiseType_input == "laplace")
                     noiseType = 0;
                 else if (noiseType_input == "gaussian")
@@ -147,6 +156,9 @@ namespace DifferentiallyPrivate.Models
             }
         }
 
+        //Builds chart
+        //Calls PINQAnalyser to perform DP with parameters
+        //Returns resulting Highchart
         public Highcharts FillChart()
         {
                 PINQAnalyser PINQA = new PINQAnalyser() { iData = data, 
@@ -158,41 +170,43 @@ namespace DifferentiallyPrivate.Models
 
                 object[][] results = null;
 
+                //Get DP and Non-DP results
                 if (queryType == "avg")
                 {
+                    //DP
                     results = PINQA.DoAverageAnalysis();
+
+                    //Non-DP
                     actualResult = data.Average();
                 }
                 else if (queryType == "med")
                 {
+                    //DP
                     results = PINQA.DoMedianAnalysis();
+
+                    //Non-DP
                     int count = data.Count();
                     var orderedData = data.OrderBy(x => x);
                     double median = orderedData.ElementAt(count / 2) + orderedData.ElementAt((count - 1) / 2);
                     median /= 2;
                     actualResult = median;
                 }
-
-                object[] xAxis = results[0];
-                object[] yAxis = results[1];
-
-                //SET ACTUAL RESULT
                 
-
-                /*for (int i = 0; i < xAxis.Count() - 1; i++)
-                {
-                    xAxis[i] = Math.Round(Double.Parse(xAxis[i].ToString()), 2).ToString();
-                }*/
+                //Set up Highchart
+                object[] xAxis = results[0]; //Value ranges
+                object[] yAxis = results[1]; //Occurences
 
                 highchart.SetXAxis(new DotNet.Highcharts.Options.XAxis
-                                {
-                                    Categories = xAxis.OfType<string>().Select((o) => (string)o).ToArray()
-                                })
-                                .SetSeries(new DotNet.Highcharts.Options.Series
-                                {
-                                    Data = new DotNet.Highcharts.Helpers.Data(yAxis)
-                                });
+                {
+                    Categories = xAxis.OfType<string>().Select((o) => (string)o).ToArray()
+                })
+                .SetSeries(new DotNet.Highcharts.Options.Series
+                {
+                    Data = new DotNet.Highcharts.Helpers.Data(yAxis)
+                });
+
                 highchart.SetCredits(new DotNet.Highcharts.Options.Credits() { Text = "Simple Chart" });
+
                 highchart.SetTitle(new Title()
                 {
                     Text = "PINQ " + queryType + "s (" + iterations + " iterations; " +
