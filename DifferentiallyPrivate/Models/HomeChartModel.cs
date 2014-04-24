@@ -59,6 +59,8 @@ namespace DifferentiallyPrivate.Models
         public string timespan_input { get; set; }
         public IEnumerable<SelectListItem> timespans { get; set; }
 
+        public double actualResult { get; set; }
+
         private double[] data;
         private string data_input;
         private int iterations;
@@ -133,18 +135,6 @@ namespace DifferentiallyPrivate.Models
         {
             try
             {
-                //Data
-                /*data_input = data_input.Replace(" ", "");
-
-                string[] tokenisedData = data_input.Split(',');
-                data = new double[tokenisedData.Count()];
-                
-                for (int i = 0; i < tokenisedData.Count(); i++)
-                {
-                    data[i] = Double.Parse(tokenisedData[i]);
-                }
-                data = data.OrderBy(x => x).ToArray();
-                */
                 //Iterations
                 iterations = Int32.Parse(iterations_input);
 
@@ -185,10 +175,21 @@ namespace DifferentiallyPrivate.Models
 
                 object[][] results = null;
 
+
                 if (queryType == "avg")
+                {
                     results = PINQA.DoAverageAnalysis();
+                    actualResult = data.Average();
+                }
                 else if (queryType == "med")
+                {
                     results = PINQA.DoMedianAnalysis();
+                    int count = data.Count();
+                    var orderedData = data.OrderBy(x => x);
+                    double median = orderedData.ElementAt(count / 2) + orderedData.ElementAt((count - 1) / 2);
+                    median /= 2;
+                    actualResult = median;
+                }
 
                 object[] xAxis = results[0];
                 object[] yAxis = results[1];

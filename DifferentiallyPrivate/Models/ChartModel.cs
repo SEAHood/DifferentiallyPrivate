@@ -60,7 +60,7 @@ namespace DifferentiallyPrivate.Models
         private int noiseType;
         private double delta;
 
-        public bool active { get; set; }
+        public double actualResult { get; set; } //For actual (non-DP) average/median
 
         public ChartModel()
         {
@@ -69,8 +69,6 @@ namespace DifferentiallyPrivate.Models
 
         public ChartModel(int _id)
         {
-            active = true;
-
             noise_types = new[] {
                 new SelectListItem { Value = "laplace", Text = "Laplace" },
                 new SelectListItem { Value = "gaussian", Text = "Gaussian" }
@@ -83,11 +81,11 @@ namespace DifferentiallyPrivate.Models
             id = _id;
 
             //Defaults
-            iterations_input = "1000";
+            iterations_input = "100";
             epsilon_input = "1";
             binCount_input = "10";
             queryType_input = "avg";
-            data_input = "1,2,3,4,5,6,7,8,9,10";
+            data_input = "10,20,30,40,50,60,70,80,90,100";
             noiseType_input = "laplace";
             delta_input = "0.0001";
         }
@@ -161,12 +159,25 @@ namespace DifferentiallyPrivate.Models
                 object[][] results = null;
 
                 if (queryType == "avg")
+                {
                     results = PINQA.DoAverageAnalysis();
+                    actualResult = data.Average();
+                }
                 else if (queryType == "med")
+                {
                     results = PINQA.DoMedianAnalysis();
+                    int count = data.Count();
+                    var orderedData = data.OrderBy(x => x);
+                    double median = orderedData.ElementAt(count / 2) + orderedData.ElementAt((count - 1) / 2);
+                    median /= 2;
+                    actualResult = median;
+                }
 
                 object[] xAxis = results[0];
                 object[] yAxis = results[1];
+
+                //SET ACTUAL RESULT
+                
 
                 /*for (int i = 0; i < xAxis.Count() - 1; i++)
                 {

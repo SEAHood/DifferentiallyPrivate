@@ -15,6 +15,8 @@
         {
             chartHeader += ")";
         }
+
+        chartHeader += " Actual " + Model.allCharts[i].queryType_input + ": " + Model.allCharts[i].actualResult;
     
         <h4>@chartHeader</h4>
         @(Model.allCharts[i].highchart)
@@ -26,9 +28,7 @@
         <br /><br/>
         string chartHeader = "Chart " + Model.allHomeCharts[i].id.ToString() +
                              " using " + Model.allHomeCharts[i].noiseType_input + " noise. " +
-                             "Category = " + Model.allHomeCharts[i].data_cat_input + ", " +
-                             "Timespan = " + Model.allHomeCharts[i].timespan_input +
-                             " (ε = " + Model.allHomeCharts[i].epsilon_input;
+                             "(ε = " + Model.allHomeCharts[i].epsilon_input;
 
         if (Model.allHomeCharts[i].noiseType_input == "gaussian")
         {
@@ -38,6 +38,10 @@
         {
             chartHeader += ")";
         }
+
+        chartHeader += " Category = " + Model.allHomeCharts[i].data_cat_input +
+                       ", Timespan = " + Model.allHomeCharts[i].timespan_input + 
+                       ", Actual " + Model.allHomeCharts[i].queryType_input + ": " + Math.Round(Model.allHomeCharts[i].actualResult, 3);
     
         <h4>@chartHeader</h4>
         @(Model.allHomeCharts[i].highchart)
