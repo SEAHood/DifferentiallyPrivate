@@ -1,5 +1,5 @@
-﻿<!DOCTYPE html>
-
+﻿<!-- Layout page, used for every page of the site -->
+<!DOCTYPE html>
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -50,7 +50,7 @@
         <div id="nav">
             @if (Request.IsAuthenticated)
             {
-                <a href="~/whatis">about</a>
+                <a href="~/about">about</a>
                 <a href="~/charting">charting</a>
                 <a href="~/howto">how to</a>
                 <a href="#" onclick="ShowLogout();return false;">logout</a>
@@ -78,7 +78,6 @@
 	<div id="footer">
 	Website by Sam Hood - Honours Project 2014
 	</div>
-    
 </div>
 </body>
 </html>

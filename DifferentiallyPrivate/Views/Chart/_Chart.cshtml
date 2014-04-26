@@ -1,4 +1,7 @@
 ﻿@model DifferentiallyPrivate.Models.MultiChart
+
+@Html.Raw(Html.ValidationMessageFor(x => x).ToString())
+
 @for (int i = 0; i < Model.allCharts.Count - 1; i++) //SIMPLE CHARTS
 {
         <br /><br/>
@@ -16,7 +19,8 @@
             chartHeader += ")";
         }
 
-        chartHeader += " Actual " + Model.allCharts[i].queryType_input + ": " + Model.allCharts[i].actualResult;
+        chartHeader += " Actual " + Model.allCharts[i].queryType_input + ": " + Model.allCharts[i].actualResult +
+                       ", Time Elapsed: " + Model.allCharts[i].stopwatch.ElapsedMilliseconds.ToString() + "ms";
     
         <h4>@chartHeader</h4>
         @(Model.allCharts[i].highchart)
@@ -40,8 +44,9 @@
         }
 
         chartHeader += " Category = " + Model.allHomeCharts[i].data_cat_input +
-                       ", Timespan = " + Model.allHomeCharts[i].timespan_input + 
-                       ", Actual " + Model.allHomeCharts[i].queryType_input + ": " + Math.Round(Model.allHomeCharts[i].actualResult, 3);
+                       ", Timespan = " + Model.allHomeCharts[i].timespan_input +
+                       ", Actual " + Model.allHomeCharts[i].queryType_input + ": " + Math.Round(Model.allHomeCharts[i].actualResult, 3) +
+                       ", Time Elapsed: " + Model.allHomeCharts[i].stopwatch.ElapsedMilliseconds.ToString() + "ms";
     
         <h4>@chartHeader</h4>
         @(Model.allHomeCharts[i].highchart)

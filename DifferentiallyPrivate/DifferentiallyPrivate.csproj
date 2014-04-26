@@ -160,7 +160,6 @@
     <Content Include="Content\img\logo.png" />
     <Content Include="Content\img\DPImage.png" />
     <Content Include="Content\js\highcharts.js" />
-    <Content Include="Content\js\jquery-1.11.0.min.js" />
     <Content Include="Global.asax" />
     <None Include="Properties\PublishProfiles\Default DP.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />
@@ -197,7 +196,7 @@
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\WhatIs.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_Layout.cshtml" />

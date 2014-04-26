@@ -9,6 +9,10 @@ using System.Web;
 
 namespace DifferentiallyPrivate.Models
 {
+    /// <summary>
+    /// User - Represents a user of the system
+    /// Encodes password and checks against database for login
+    /// </summary>
     public class User
     {
         [Required]
@@ -22,6 +26,7 @@ namespace DifferentiallyPrivate.Models
 
         public bool IsValid()
         {
+            //Check if user is valid through DBInterface
             EncodePassword();
             var DBI = new DBInterface();
             return DBI.ValidateUser(this);
@@ -30,6 +35,7 @@ namespace DifferentiallyPrivate.Models
         
         private void EncodePassword()
         {            
+            //Basic SHA1 encryption
             byte[] bytes = Encoding.UTF8.GetBytes(Password);
  
             var sha1 = SHA1.Create();

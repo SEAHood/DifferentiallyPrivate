@@ -47,6 +47,9 @@ a:hover {
     float:left;
 }
 
+#MainChart {
+    margin-top:15px;
+}
 
 #wrapper {
 	min-width:510px;
@@ -185,6 +188,10 @@ img {
     border:4px double #A0A0A0;
 }
 
+#chartsAdded {
+    padding-top:10px;
+}
+
 #chartInput {
     background-color:white;
     width:20%;
@@ -279,4 +286,14 @@ label {
 
 .xButton:focus {
     outline:0;
+}
+
+.field-validation-error {
+    background-color:red;
+    color:white;
+    font-weight:bold;
+    font-size:0.8em;
+    padding:2px;
+    border-radius:3px;
+    margin-top:50px;
 }

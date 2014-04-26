@@ -5,12 +5,20 @@ using DotNet.Highcharts.Options;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
 namespace DifferentiallyPrivate.Models
 {
+    /// <summary>
+    /// ChartModel - Main model for a single chart/query
+    /// Holds all information about a single chart or query
+    /// -   Highchart
+    /// -   All query parameters
+    /// Provides methods for invoking the generation of the chart by using PINQAnalyser
+    /// </summary>
     public class HomeChartModel
     {
         //Chart ID
@@ -63,8 +71,7 @@ namespace DifferentiallyPrivate.Models
         public string timespan_input { get; set; }
         public IEnumerable<SelectListItem> timespans { get; set; }
 
-        public double actualResult { get; set; }
-
+        //Data fields with true types
         private double[] data;
         private string data_input;
         private int iterations;
@@ -76,17 +83,22 @@ namespace DifferentiallyPrivate.Models
         private string timespan;
         private string data_cat;
 
-        public HomeChartModel()
-        {
+        //Actual result for (non-DP) average/median
+        public double actualResult { get; set; }
 
-        }
+        //Stopwatch for time taken
+        public Stopwatch stopwatch { get; set; }
 
+        //Empty constructor - not used, but required
+        public HomeChartModel() { }
+
+        //Constructor - setup chart initially
         public HomeChartModel(int _id)
         {
+            //Set data categories, noise and query types, and timespan arrays
             data_cats = new[] {
                 new SelectListItem { Value = "temp", Text = "Temperature" },
                 new SelectListItem { Value = "humidity", Text = "Humidity" },
-                //new SelectListItem { Value = "power", Text = "Power" },        ISSUE NEEDS FIXING
                 new SelectListItem { Value = "windspeed", Text = "Wind Speed" }
             };
             noise_types = new[] {
@@ -104,10 +116,8 @@ namespace DifferentiallyPrivate.Models
                 new SelectListItem { Value = "2629740", Text = "Month" }
             };
 
+            //Set chart ID
             id = _id;
-            queryType_input = "avg";
-            data_cat_input = "temp";
-            timespan_input = "hour";
 
             //Defaults
             iterations_input = "1000";
@@ -116,8 +126,12 @@ namespace DifferentiallyPrivate.Models
             queryType_input = "avg";
             noiseType_input = "laplace";
             delta_input = "0.0001";
+            queryType_input = "avg";
+            data_cat_input = "temp";
+            timespan_input = "hour";
         }
 
+        //Initialise chart
         public void InitChart()
         {
             string chartName = "chart" + id.ToString();
@@ -128,13 +142,18 @@ namespace DifferentiallyPrivate.Models
                         Width = 600,
                         Height = 350
                     });
+
+            stopwatch = new Stopwatch();
         }
 
+        //Setter for data - used by ChartController after pulling from DB
         public void setData(double[] _data_input)
         {
             data = _data_input;
         }
 
+        //Validates the chart
+        //Returns true if valid, false otherwise
         public bool IsValid()
         {
             try
@@ -168,58 +187,76 @@ namespace DifferentiallyPrivate.Models
             }
         }
 
+        //Builds chart
+        //Calls PINQAnalyser to perform DP with parameters
+        //Returns resulting Highchart
         public Highcharts FillChart()
         {
-                PINQAnalyser PINQA = new PINQAnalyser() { iData = data, 
-                                                          iterations = iterations,
-                                                          epsilon = epsilon,
-                                                          binCount = binCount,
-                                                          noiseType = noiseType,
-                                                          delta = delta};
+            //Start timer
+            stopwatch.Start();
 
-                object[][] results = null;
+            //Create PINQAnalyser object and results object[][]
+            PINQAnalyser PINQA = new PINQAnalyser() { iData = data, 
+                                                        iterations = iterations,
+                                                        epsilon = epsilon,
+                                                        binCount = binCount,
+                                                        noiseType = noiseType,
+                                                        delta = delta};
+            object[][] results = null;
 
 
-                if (queryType == "avg")
-                {
-                    results = PINQA.DoAverageAnalysis();
-                    actualResult = data.Average();
-                }
-                else if (queryType == "med")
-                {
-                    results = PINQA.DoMedianAnalysis();
-                    int count = data.Count();
-                    var orderedData = data.OrderBy(x => x);
-                    double median = orderedData.ElementAt(count / 2) + orderedData.ElementAt((count - 1) / 2);
-                    median /= 2;
-                    actualResult = median;
-                }
+            //Get DP and Non-DP results
+            if (queryType == "avg") //Average analysis
+            {
+                //DP
+                results = PINQA.DoAverageAnalysis();
 
-                object[] xAxis = results[0];
-                object[] yAxis = results[1];
+                //Non-DP
+                actualResult = data.Average();
+            }
+            else if (queryType == "med") //Median analysis
+            {
+                //DP
+                results = PINQA.DoMedianAnalysis();
 
-                /*for (int i = 0; i < xAxis.Count() - 1; i++)
-                {
-                    xAxis[i] = Math.Round(Double.Parse(xAxis[i].ToString()), 2).ToString();
-                }*/
+                //Non-DP
+                int count = data.Count();
+                var orderedData = data.OrderBy(x => x);
+                double median = orderedData.ElementAt(count / 2) + orderedData.ElementAt((count - 1) / 2);
+                median /= 2;
+                actualResult = median;
+            }
 
-                highchart.SetXAxis(new DotNet.Highcharts.Options.XAxis
-                                {
-                                    Categories = xAxis.OfType<string>().Select((o) => (string)o).ToArray()
-                                })
-                                .SetSeries(new DotNet.Highcharts.Options.Series
-                                {
-                                    Data = new DotNet.Highcharts.Helpers.Data(yAxis)
-                                });
-                highchart.SetCredits(new DotNet.Highcharts.Options.Credits() { Text = "Simple Chart" });
-                highchart.SetTitle(new Title()
-                {
-                    Text = "PINQ " + queryType + "s (" + iterations + " iterations; " +
-                                                binCount + " bins; " +
-                                                "ε = " + epsilon + ")"
-                });
+            //Extract axes from results
+            object[] xAxis = results[0];
+            object[] yAxis = results[1];
 
-                return highchart;
+            //Set up X axis
+            highchart.SetXAxis(new DotNet.Highcharts.Options.XAxis
+            {
+                Categories = xAxis.OfType<string>().Select((o) => (string)o).ToArray(),
+                Labels = new XAxisLabels { Enabled = false } //Hide labels to stop congestion
+            })
+            .SetSeries(new DotNet.Highcharts.Options.Series
+            {
+                Data = new DotNet.Highcharts.Helpers.Data(yAxis)
+            });
+
+
+            //Set up credits and title, remove legend
+            highchart.SetCredits(new DotNet.Highcharts.Options.Credits() { Text = "DifferentiallyPrivate.com" });
+            highchart.SetLegend(new Legend { Enabled = false });
+            highchart.SetTitle(new Title()
+            {
+                Text = "PINQ " + queryType + "s (" + iterations + " iterations; " +
+                                            binCount + " bins; " +
+                                            "ε = " + epsilon + ")"
+            });
+
+            //Stop timer
+            stopwatch.Stop();
+
+            return highchart;
         }
     }
 }

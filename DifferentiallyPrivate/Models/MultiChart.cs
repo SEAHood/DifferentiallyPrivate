@@ -6,6 +6,9 @@ using System.Web;
 
 namespace DifferentiallyPrivate.Models
 {
+    /// <summary>
+    /// MultiChart - holds lists of both ChartModel and HomeChartModel
+    /// </summary>
     public class MultiChart
     {
         public List<ChartModel> allCharts { get; set; }
@@ -15,19 +18,6 @@ namespace DifferentiallyPrivate.Models
         {
             allCharts = new List<ChartModel>();
             allHomeCharts = new List<HomeChartModel>();
-        }
-
-        public void UpdateIDs()
-        {
-            for (int i = 0; i < allCharts.Count; i++)
-            {
-                allCharts[i].id = i;
-            }
-
-            for (int i = 0; i < allHomeCharts.Count; i++)
-            {
-                allHomeCharts[i].id = i;
-            }
         }
     }
 }

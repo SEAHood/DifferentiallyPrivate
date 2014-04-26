@@ -13,6 +13,10 @@ using System.Web.Mvc;
 
 namespace DifferentiallyPrivate.Controllers
 {
+    /// <summary>
+    /// ChartController - Main controller for the charting section of the site
+    /// Handles routing requests for simple and home charting
+    /// </summary>
     public class ChartController : Controller
     {
         //GET : Create new MultiChart and return to view
@@ -132,7 +136,14 @@ namespace DifferentiallyPrivate.Controllers
                     //Get data from database and set chart data
                     DBInterface DBI = new DBInterface();
                     double[] data = DBI.GetDoublesFromDB(chart.data_cat_input, chart.timespan_input);
-                    chart.setData(data);
+                    
+                    if (data != null)
+                        chart.setData(data);
+                    else
+                    {
+                        ModelState.AddModelError("", "Unable to connect retrieve data from DB");
+                        return PartialView("_Chart", mc);
+                    }
 
                     //Build charts
                     if (chart.IsValid())
@@ -189,9 +200,10 @@ namespace DifferentiallyPrivate.Controllers
                     else //Added chart is invalid
                     {
                         //Return error, remove invalid chart, add new chart (for editing)
-                        ModelState.AddModelError("", "Chart values invalid!");
+                        ModelState.AddModelError("", "Cannot add query - values invalid!");
+                        int lastID = mc.allHomeCharts.Last().id;
                         mc.allHomeCharts.Remove(mc.allHomeCharts.Last());
-                        HomeChartModel cm = new HomeChartModel(mc.allHomeCharts.Last().id);
+                        HomeChartModel cm = new HomeChartModel(lastID);
                         mc.allHomeCharts.Add(cm);
                         return View(mc);
                     }

@@ -12,6 +12,10 @@ using System.Web.Security;
 
 namespace DifferentiallyPrivate.Controllers
 {
+    /// <summary>
+    /// HomeController - Main controller for the basic areas of the site
+    /// Handles routing requests for index, login/logout, and about/howto/charting sections
+    /// </summary>
     public class HomeController : Controller
     {
         //Root page
@@ -59,7 +63,7 @@ namespace DifferentiallyPrivate.Controllers
 
         //About page
         [Authorize]
-        public ActionResult WhatIs()
+        public ActionResult About()
         {
             ViewBag.Message = "What is Differential Privacy?";
             return View();

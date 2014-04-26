@@ -5,6 +5,7 @@ using DotNet.Highcharts.Options;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -12,6 +13,13 @@ using System.Web.Mvc;
 
 namespace DifferentiallyPrivate.Models
 {
+    /// <summary>
+    /// ChartModel - Main model for a single chart/query
+    /// Holds all information about a single chart or query
+    /// -   Highchart
+    /// -   All query parameters
+    /// Provides methods for invoking the generation of the chart by using PINQAnalyser
+    /// </summary>
     public class ChartModel
     {
         //Chart ID
@@ -68,6 +76,10 @@ namespace DifferentiallyPrivate.Models
         //Actual result for (non-DP) average/median
         public double actualResult { get; set; }
 
+        //Stopwatch for time taken
+        public Stopwatch stopwatch { get; set; }
+
+        //Empty constructor - not used, but required
         public ChartModel() { }
 
         //Constructor - setup chart initially
@@ -107,6 +119,8 @@ namespace DifferentiallyPrivate.Models
                         Width = 600,
                         Height = 350
                     });
+
+            stopwatch = new Stopwatch();
         }
 
         //Validates the chart
@@ -118,6 +132,7 @@ namespace DifferentiallyPrivate.Models
                 //Data validation
                 data_input = data_input.Replace(" ", "");
 
+                //Extract double[] array from comma-delimited string
                 string[] tokenisedData = data_input.Split(',');
                 data = new double[tokenisedData.Count()];
 
@@ -161,60 +176,69 @@ namespace DifferentiallyPrivate.Models
         //Returns resulting Highchart
         public Highcharts FillChart()
         {
-                PINQAnalyser PINQA = new PINQAnalyser() { iData = data, 
-                                                          iterations = iterations,
-                                                          epsilon = epsilon,
-                                                          binCount = binCount,
-                                                          noiseType = noiseType,
-                                                          delta = delta};
+            //Start timer
+            stopwatch.Start();
 
-                object[][] results = null;
+            //Create PINQAnalyser object and results object[][]
+            PINQAnalyser PINQA = new PINQAnalyser() { iData = data, 
+                                                        iterations = iterations,
+                                                        epsilon = epsilon,
+                                                        binCount = binCount,
+                                                        noiseType = noiseType,
+                                                        delta = delta};
+            object[][] results = null;
 
-                //Get DP and Non-DP results
-                if (queryType == "avg")
-                {
-                    //DP
-                    results = PINQA.DoAverageAnalysis();
+            //Get DP and Non-DP results
+            if (queryType == "avg") //Average analysis
+            {
+                //DP
+                results = PINQA.DoAverageAnalysis();
 
-                    //Non-DP
-                    actualResult = data.Average();
-                }
-                else if (queryType == "med")
-                {
-                    //DP
-                    results = PINQA.DoMedianAnalysis();
+                //Non-DP
+                actualResult = data.Average();
+            }
+            else if (queryType == "med")
+            {
+                //DP
+                results = PINQA.DoMedianAnalysis();
 
-                    //Non-DP
-                    int count = data.Count();
-                    var orderedData = data.OrderBy(x => x);
-                    double median = orderedData.ElementAt(count / 2) + orderedData.ElementAt((count - 1) / 2);
-                    median /= 2;
-                    actualResult = median;
-                }
+                //Non-DP
+                int count = data.Count();
+                var orderedData = data.OrderBy(x => x);
+                double median = orderedData.ElementAt(count / 2) + orderedData.ElementAt((count - 1) / 2);
+                median /= 2;
+                actualResult = median;
+            }
                 
-                //Set up Highchart
-                object[] xAxis = results[0]; //Value ranges
-                object[] yAxis = results[1]; //Occurences
+            //Extract axes from results
+            object[] xAxis = results[0]; //Value ranges
+            object[] yAxis = results[1]; //Occurences
 
-                highchart.SetXAxis(new DotNet.Highcharts.Options.XAxis
-                {
-                    Categories = xAxis.OfType<string>().Select((o) => (string)o).ToArray()
-                })
-                .SetSeries(new DotNet.Highcharts.Options.Series
-                {
-                    Data = new DotNet.Highcharts.Helpers.Data(yAxis)
-                });
+            //Set up X axis
+            highchart.SetXAxis(new DotNet.Highcharts.Options.XAxis
+            {
+                Categories = xAxis.OfType<string>().Select((o) => (string)o).ToArray(),
+                Labels = new XAxisLabels { Enabled = false } //Hide labels to stop congestion
+            })
+            .SetSeries(new DotNet.Highcharts.Options.Series
+            {
+                Data = new DotNet.Highcharts.Helpers.Data(yAxis)
+            });
 
-                highchart.SetCredits(new DotNet.Highcharts.Options.Credits() { Text = "Simple Chart" });
+            //Set up credits and title, remove legend
+            highchart.SetCredits(new DotNet.Highcharts.Options.Credits() { Text = "DifferentiallyPrivate.com" });
+            highchart.SetLegend(new Legend { Enabled = false });
+            highchart.SetTitle(new Title()
+            {
+                Text = "PINQ " + queryType + "s (" + iterations + " iterations; " +
+                                            binCount + " bins; " +
+                                            "ε = " + epsilon + ")"
+            });
 
-                highchart.SetTitle(new Title()
-                {
-                    Text = "PINQ " + queryType + "s (" + iterations + " iterations; " +
-                                                binCount + " bins; " +
-                                                "ε = " + epsilon + ")"
-                });
+            //Stop timer
+            stopwatch.Stop();
 
-                return highchart;
+            return highchart;
         }
     }
 }

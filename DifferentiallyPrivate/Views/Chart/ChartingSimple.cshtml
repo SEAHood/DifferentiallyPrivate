@@ -52,8 +52,9 @@
         };
     </script>
 
+    <!-- Added charts section -->
+    @Html.Raw(Html.ValidationMessageFor(x => x).ToString())
     <div id="chartsAdded">
-        @Html.Raw(Html.ValidationMessageFor(x => x).ToString())
         @if (Model.allCharts.Count > 1) //If number of charts is 1, only the new unedited chart exists
         {
             for (int i = 0; i < Model.allCharts.Count - 1; i++) //Trim off new unedited chart model - default values (not added by user)
@@ -63,6 +64,7 @@
 			            <h4 style="float:left;color:cadetblue;">Chart @Model.allCharts[i].id</h4>
 			            @using (Html.BeginForm("ChartingSimple", "Chart", FormMethod.Post))
                         {
+                            //Cache all chart data as hidden fields
                             for (int j = 0; j < Model.allCharts.Count - 1; j++)
                             {
                                 @Html.HiddenFor(c => Model.allCharts[j].binCount_input)
@@ -104,7 +106,7 @@
     </div>
     <div style="clear:both"></div>
 
-    <input type="button" value="Add Query" onclick="ShowChartInput()" class="mainButton" />
+    <input type="button" value="Add Query" onclick="ShowChartInput()" class="mainButton" style="margin-top:10px;" />
     @using (Html.BeginForm("ChartingSimple", "Chart", FormMethod.Get))
     {
         <input type="submit" value="Clear All" class="mainButton" />
@@ -118,6 +120,7 @@
     {
         for (int i = 0; i < Model.allCharts.Count - 1; i++)
         {
+            //Cache all chart data as hidden fields
             @Html.HiddenFor(c => Model.allCharts[i].binCount_input)
             @Html.HiddenFor(c => Model.allCharts[i].data_input)
             @Html.HiddenFor(c => Model.allCharts[i].epsilon_input)
@@ -130,33 +133,28 @@
         <input id="submit" type="submit" value="Generate Query Charts" class="mainButton" />
     }
     
-
+    <!-- Loading Pane - Only visible during AJAX call to generate charts -->
     <div id="loadingPanel">
         <img src="~/Content/img/logo.png" width="50px" /><br />
         Generating charts..<br />
         <img src="~/Content/img/ajax-loader.gif" style="margin-top:10px;"/>
     </div>
 
-    <!--using (Ajax.BeginForm("ChartingSimple", "Chart", new AjaxOptions{ UpdateTargetId = "MainChart",
-                                                                           OnBegin = "return ShowLoading()",
-                                                                           OnSuccess = "return HideLoading()" }))
-    -->
+    <!-- Input Pane - Only visible during adding queries -->
     <div id="chartInput">
         @using (Html.BeginForm("ChartingSimple", "Chart", FormMethod.Post))
         {
-            //if (Model.allCharts.Count > 1)
-            //{
             for (int i = 0; i < Model.allCharts.Count - 1; i++)
             {
-                        @Html.HiddenFor(c => Model.allCharts[i].binCount_input)
-                        @Html.HiddenFor(c => Model.allCharts[i].data_input)
-                        @Html.HiddenFor(c => Model.allCharts[i].epsilon_input)
-                        @Html.HiddenFor(c => Model.allCharts[i].iterations_input)
-                        @Html.HiddenFor(c => Model.allCharts[i].queryType_input)
-                        @Html.HiddenFor(c => Model.allCharts[i].noiseType_input)
-                        @Html.HiddenFor(c => Model.allCharts[i].delta_input)
-                        @Html.HiddenFor(c => Model.allCharts[i].id)
-                   
+                //Cache all chart data as hidden fields
+                @Html.HiddenFor(c => Model.allCharts[i].binCount_input)
+                @Html.HiddenFor(c => Model.allCharts[i].data_input)
+                @Html.HiddenFor(c => Model.allCharts[i].epsilon_input)
+                @Html.HiddenFor(c => Model.allCharts[i].iterations_input)
+                @Html.HiddenFor(c => Model.allCharts[i].queryType_input)
+                @Html.HiddenFor(c => Model.allCharts[i].noiseType_input)
+                @Html.HiddenFor(c => Model.allCharts[i].delta_input)
+                @Html.HiddenFor(c => Model.allCharts[i].id)                   
             }
             @Html.HiddenFor(c => Model.allCharts[Model.allCharts.Count - 1].id)
             //}
@@ -237,6 +235,7 @@
         }
     </div>
 
+    <!-- Chart Pane - always visible, not always populated - target for returned complete charts -->
     <div id="MainChart">
     </div>  
 </div>

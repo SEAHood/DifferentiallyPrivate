@@ -13,14 +13,12 @@ namespace DifferentiallyPrivate.Services
         public int iterations { get; set; }
         public double epsilon { get; set; }
         public int binCount { get; set; }
-        public int noiseType { get; set; } //0 = laplace, 1 = gaussian
-        public double delta { get; set; } //used for gaussian
+        public int noiseType { get; set; } 
+        public double delta { get; set; } 
 
         //RETURNS: object[<value>][<#calculated>]
         public object[][] DoAverageAnalysis()
         {
-            //double low = iData[0];                              //-------
-            //double high = iData[iData.Count() - 1];             //MAKE MORE GENERAL - NOT JUST DOUBLE
             double low = 0;
             double high = 100;
             int[] histoCount = new int[binCount];
@@ -40,15 +38,11 @@ namespace DifferentiallyPrivate.Services
             object[] yAxis = new object[Int32.Parse(binCount.ToString())];
             string[] xAxis = new string[Int32.Parse(binCount.ToString())];
 
-            //double hiJ = 0;
 
             for (decimal i = (decimal)low, j = 0; i < (decimal)high && j < binCount; i += groupSize, j++)
             {
                 var groupList = averages.Where(x => x <= (double)(i + groupSize) && x >= (double)i);
                 int valuesFound = groupList.Count();
-
-                //if (hiJ < j)
-                //    hiJ = j;
 
                 xAxis[Int32.Parse(j.ToString())] = i.ToString() + " - " + (i + groupSize).ToString();
                 yAxis[Int32.Parse(j.ToString())] = valuesFound;
@@ -60,8 +54,8 @@ namespace DifferentiallyPrivate.Services
         //RETURNS: object[<value>][<#calculated>]
         public object[][] DoMedianAnalysis()
         {
-            double low = iData[0];                              //-------
-            double high = iData[iData.Count() - 1];             //MAKE MORE GENERAL - NOT JUST DOUBLE
+            double low = iData[0];
+            double high = iData[iData.Count() - 1];
             int[] histoCount = new int[binCount];
             double[] medians = new double[iterations];
 

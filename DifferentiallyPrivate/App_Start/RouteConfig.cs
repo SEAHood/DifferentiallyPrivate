@@ -36,9 +36,9 @@ namespace DifferentiallyPrivate
 
             //Route for about page
             routes.MapRoute(
-                name: "WhatIs",
-                url: "whatis",
-                defaults: new { controller = "Home", action = "WhatIs" }
+                name: "About",
+                url: "about",
+                defaults: new { controller = "Home", action = "About" }
             );
 
             //Route for how to page

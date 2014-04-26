@@ -10,14 +10,11 @@ namespace DifferentiallyPrivate.Services
 {
     public class DBInterface
     {
+        //Connection string for database
         //private string connectionString = ConfigurationManager.ConnectionStrings["RemoteSmartStarDB"].ConnectionString;
         private string connectionString = ConfigurationManager.ConnectionStrings["LocalSmartStarDB"].ConnectionString;
 
-        public DBInterface()
-        {
-            SqlConnection con = new SqlConnection(connectionString);
-            SqlCommand cmd = new SqlCommand("SELECT * FROM whatever");
-        }
+        public DBInterface() { }
 
         public bool ValidateUser(User u)
         {
@@ -31,7 +28,6 @@ namespace DifferentiallyPrivate.Services
                     cmd.Parameters.Add(new SqlParameter("username", u.UserName));
                     cmd.Connection = con;
 
-                    //ADD ERROR HANDLING
                     con.Open();
                     var reader = cmd.ExecuteReader();
                     if (reader.HasRows)
