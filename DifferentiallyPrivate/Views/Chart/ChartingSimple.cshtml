@@ -6,13 +6,30 @@
 
 <div id="viewContent">
     <h3>Simple Charting</h3>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <style>
+        label {
+        }
+        .ui-tooltip {
+            padding:2px 3px;
+            border:1px solid #426E6F;
 
+            border-left:none;
+            border-bottom-left-radius:0px;
+            border-top-left-radius:0px;
+        }
+        .ui-tooltip-content {
+            font-size:0.6em;
+            
+        }
+    </style>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
     <script>
         $(document).ready(function () {
             HideLoading();
             HideChartInput();
             $("#deltaInput").hide();
-            $(".noiseType").change(function () {
+            $("#noiseType").change(function () {
                 if ($(this).val() == "gaussian") {
                     $("#deltaInput").show();
                 }
@@ -21,13 +38,11 @@
                 }
             });
 
-
-            $(".xButton").mouseover(function () {
-                $(this).attr("src", "@Url.Content("~/Content/img/closeS.png")");
+            $(".mainTextbox").tooltip({
+                position: { my: "left+0 center", at: "right center" },
+                show: { effect: "slide", duration: 600 }
             });
-            $(".xButton").mouseout(function () {
-                $(this).attr("src", "@Url.Content("~/Content/img/closeUS.png")");
-            });
+            $(document).tooltip();
             
         });
 
@@ -40,7 +55,7 @@
             HideDarkScreen();
             $("#chartInput").hide();
         }
-
+        
         function ShowLoading() {
             ShowDarkScreen();
             $("#loadingPanel").show();
@@ -160,13 +175,14 @@
             //}
             <img src="~/Content/img/logo.png" width="50px" />
             <h4>New Query</h4>
+            <p id="validation_info">Mouse over fields for validation details</p>
             <table>
                 <tr>
                     <td>
                         @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].iterations_input)
                     </td>
                     <td>
-                        @Html.TextBoxFor(c => Model.allCharts[Model.allCharts.Count - 1].iterations_input, new { @class = "mainTextbox" })
+                        @Html.TextBoxFor(c => Model.allCharts[Model.allCharts.Count - 1].iterations_input, new { @class = "mainTextbox", @title = "Range: 0 - 100000" })
                     </td>
                 </tr>
                 <tr>
@@ -174,7 +190,7 @@
                         @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].epsilon_input)
                     </td>
                     <td>
-                        @Html.TextBoxFor(c => Model.allCharts[Model.allCharts.Count - 1].epsilon_input, new { @class = "mainTextbox" })
+                        @Html.TextBoxFor(c => Model.allCharts[Model.allCharts.Count - 1].epsilon_input, new { @class = "mainTextbox", @title = "Range: 0.0+" })
                     </td>
                 </tr>
                 <tr>
@@ -182,7 +198,7 @@
                         @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].binCount_input)
                     </td>
                     <td>
-                        @Html.TextBoxFor(c => Model.allCharts[Model.allCharts.Count - 1].binCount_input, new { @class = "mainTextbox" })
+                        @Html.TextBoxFor(c => Model.allCharts[Model.allCharts.Count - 1].binCount_input, new { @class = "mainTextbox", @title = "Range: 0 - 100000" })
                     </td>
                 </tr>
                 <tr>
@@ -190,7 +206,7 @@
                         @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].data_input)
                     </td>
                     <td>
-                        @Html.TextBoxFor(c => Model.allCharts[Model.allCharts.Count - 1].data_input, new { @class = "mainTextbox" })
+                        @Html.TextBoxFor(c => Model.allCharts[Model.allCharts.Count - 1].data_input, new { @class = "mainTextbox", @title = "Comma-seperated values (i.e. 1,2,3,4,5)" })
                     </td>
                 </tr>
 
@@ -200,7 +216,8 @@
                     </td>
                     <td>
                         @Html.DropDownListFor(c => Model.allCharts[Model.allCharts.Count - 1].queryType_input,
-                                              new SelectList(Model.allCharts[Model.allCharts.Count - 1].query_types, "Value", "Text"))
+                                              new SelectList(Model.allCharts[Model.allCharts.Count - 1].query_types, "Value", "Text"),
+                                              new { @class = "mainDropdown" })
                     </td>
                 </tr>
                 
@@ -211,7 +228,7 @@
                     <td>
                         @Html.DropDownListFor(c => Model.allCharts[Model.allCharts.Count - 1].noiseType_input,
                                               new SelectList(Model.allCharts[Model.allCharts.Count - 1].noise_types, "Value", "Text"),
-                                              new { @class = "noiseType" })
+                                              new { @id = "noiseType", @class = "mainDropdown" })
                     </td>
                 </tr>
 
@@ -220,7 +237,7 @@
                         @Html.LabelFor(c => Model.allCharts[Model.allCharts.Count - 1].delta_input)
                     </td>
                     <td>
-                        @Html.TextBoxFor(c => Model.allCharts[Model.allCharts.Count - 1].delta_input, new { @class = "mainTextbox" })
+                        @Html.TextBoxFor(c => Model.allCharts[Model.allCharts.Count - 1].delta_input, new { @class = "mainTextbox", @title = "Greater than 0.0, less than 1.0" })
                     </td>
                 </tr>
                 <tr style="padding-top:10px;">

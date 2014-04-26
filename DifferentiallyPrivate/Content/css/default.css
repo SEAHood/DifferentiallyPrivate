@@ -239,6 +239,13 @@ img {
     margin-top:5px;
     margin-bottom:5px;
     padding:2px;
+    border-color:cadetblue;
+    border-style:solid;
+    border-radius:2px;
+}
+
+.mainDropdown {
+    border-color:cadetblue;
 }
 
 label {
@@ -276,6 +283,12 @@ label {
     margin:0;
 }
 
+#validation_info {
+    font-size:0.8em;
+    margin-top:15px;
+    margin-bottom:5px;
+}
+
 .xButton:hover {
     background-image:url("../img/closeS.png");
 }
@@ -291,9 +304,9 @@ label {
 .field-validation-error {
     background-color:red;
     color:white;
+    box-shadow: inset 0 0 5px #393939;
     font-weight:bold;
     font-size:0.8em;
-    padding:2px;
+    padding:4px;
     border-radius:3px;
-    margin-top:50px;
 }

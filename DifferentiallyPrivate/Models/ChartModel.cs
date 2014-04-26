@@ -116,7 +116,7 @@ namespace DifferentiallyPrivate.Models
                     .InitChart(new Chart
                     {
                         DefaultSeriesType = ChartTypes.Column,
-                        Width = 600,
+                        Width = 800,
                         Height = 350
                     });
 
@@ -144,15 +144,23 @@ namespace DifferentiallyPrivate.Models
 
                 //Iterations validation
                 iterations = Int32.Parse(iterations_input);
+                if (iterations < 0 || iterations > 100000)
+                    return false;
 
                 //Epsilon validation
                 epsilon = Double.Parse(epsilon_input);
+                if (epsilon < 0 || epsilon > Double.MaxValue)
+                    return false;
 
                 //Delta validation
                 delta = Double.Parse(delta_input);
+                if (delta < 0 || delta > 1)
+                    return false;
 
                 //Bins validation
                 binCount = Int32.Parse(binCount_input);
+                if (binCount < 0 || binCount > 250)
+                    return false;
 
                 //Query Type validation
                 queryType = queryType_input;

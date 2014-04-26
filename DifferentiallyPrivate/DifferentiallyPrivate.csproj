@@ -160,6 +160,7 @@
     <Content Include="Content\img\logo.png" />
     <Content Include="Content\img\DPImage.png" />
     <Content Include="Content\js\highcharts.js" />
+    <Content Include="Content\js\textbox_popups.js" />
     <Content Include="Global.asax" />
     <None Include="Properties\PublishProfiles\Default DP.pubxml" />
     <None Include="Scripts\jquery-2.1.0.intellisense.js" />

@@ -80,8 +80,6 @@ namespace DifferentiallyPrivate.Models
         private string queryType;
         private int noiseType;
         private double delta;
-        private string timespan;
-        private string data_cat;
 
         //Actual result for (non-DP) average/median
         public double actualResult { get; set; }
@@ -158,17 +156,25 @@ namespace DifferentiallyPrivate.Models
         {
             try
             {
-                //Iterations
+                //Iterations validation
                 iterations = Int32.Parse(iterations_input);
+                if (iterations < 0 || iterations > 100000)
+                    return false;
 
-                //Epsilon
+                //Epsilon validation
                 epsilon = Double.Parse(epsilon_input);
+                if (epsilon < 0 || epsilon > Double.MaxValue)
+                    return false;
 
-                //Delta
+                //Delta validation
                 delta = Double.Parse(delta_input);
+                if (delta < 0 || delta > 1)
+                    return false;
 
-                //Bins
+                //Bins validation
                 binCount = Int32.Parse(binCount_input);
+                if (binCount < 0 || binCount > 250)
+                    return false;
 
                 //Query Type
                 queryType = queryType_input;
