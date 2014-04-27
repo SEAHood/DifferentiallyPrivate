@@ -3,9 +3,250 @@
 }
 
 
+<link rel="stylesheet" type="text/css" href="~/Content/css/about.css">
 <div id="viewContent">
     <h3>@ViewBag.Message</h3>
-    <p>
-        Under Construction
-    </p>
+
+    <img src="~/Content/img/howto/HowTo12.png" style="float:left; padding-right:50px; padding-top:30px;" />
+    <h4>Contents</h4>
+    <ul>
+        <li><a href="#navigation">Navigation</a></li>
+        <li><a href="#adding">Adding a chart</a></li>
+        <li><a href="#removing">Removing a chart</a></li>
+        <li><a href="#clearall">Clearing all charts</a></li>
+        <li><a href="#running">Running the charts</a></li>
+        <li><a href="#homecharting">Using home charting</a></li>
+        <li><a href="#addinghome">Adding a chart using home data</a></li>
+        <li><a href="#investigating">Investigating the results</a></li>
+    </ul>
+
+    <a name="navigation"></a>
+    <h4>Navigation</h4>
+    <p>On accessing the site, you will be greeted with the welcome page, which outlines the purpose of the site:</p>
+    <div class="centred">
+        <img src="~/Content/img/howto/HowTo1.png" /><br />
+        <span class="imageText">Welcome page</span>
+        <br /><br />
+        <table>
+        <tr>
+            <td>
+                <b>About</b>
+            </td>
+            <td>
+                Contains general information about differential privacy and how it works, along with an example to illustrate.  Provides links to useful resources.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>Charting</b>
+            </td>
+            <td>
+                The main part of the site, allows experimentation with differentially private queries for both simple and home data.
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b>How To</b>
+            </td>
+            <td>
+                Contains the same information as is in this document, good for quick reference while using the site.
+            </td>
+        </tr>
+    </table>
+    </div>
+    
+    
+    <br /><br />
+    
+    <p>Once you have gained access to the site, you can move through the site using the navigation bar at the top-right of the screen:</p>
+    <div class="centred">
+        <img src="~/Content/img/howto/HowTo2.png" /><br />
+        <span class="imageText">Navigation bar</span>
+    </div>
+
+    <a name="adding"></a>
+    <br /><h4>Adding a Chart</h4>
+    <p>To add a chart, simply click the ‘Add Chart’ button; the following popup will appear:</p>
+    <div class="centred">
+        <img src="~/Content/img/howto/HowTo3.png" /><br />
+        <span class="imageText">Simple charting UI</span>
+    </div>
+    <br /><br />
+    <p>Fill in the parameters you require for the query, to check the validation on each just mouse over the textboxes:</p>
+ 
+    <div class="centred">
+        <img src="~/Content/img/howto/HowTo4.png" /><br />
+        <span class="imageText">Add simple query dialog box</span>
+        <br /><br />
+        <table>
+            <tr>
+                <td>
+                    <b>Iterations</b>
+                </td>
+                <td>
+                    Number of times that the differentially private query is run, more iterations means more chart definition.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Epsilon</b>
+                </td>
+                <td>
+                    Controls the amount of noise added to the query, the smaller the value, the more noise is added.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b># of Bins</b>
+                </td>
+                <td>
+                    The number of bins that appear on the chart, the higher the number of bins, the finer the resolution of the chart becomes. 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Data List</b>
+                </td>
+                <td>
+                    This is the list that’s used to perform the query on, this must be a comma delimited list of values between 0 and 100.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Query Type</b>
+                </td>
+                <td>
+                    Average or Median of the data list
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Distribution</b>
+                </td>
+                <td>
+                    Laplace or Gaussian.  Laplace is standard for differential privacy, but using Gaussian is interesting for experimentation.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Delta</b>
+                </td>
+                <td>
+                    Delta is used for Gaussian noise; this is usually a very small value.  Must be between 0 and 1.
+                </td>
+            </tr>
+        </table>
+    </div>
+    <br /><br />
+    <p>Once you’re done, click ‘Add’ to add the chart, note that the chart doesn’t generate itself yet.  You can add as many charts 
+        as you like.  Your charting page may end up looking something like this:</p>
+    
+    <div class="centred">
+        <img src="~/Content/img/howto/HowTo5.png" /><br />
+        <span class="imageText">Validation on mouseover</span>
+    </div>
+    <br />
+    <p>Each chart has all of its information within its ‘box’, so you can see at a glance what attributes it has.</p>
+    
+    <div class="centred">
+        <img src="~/Content/img/howto/HowTo6.png" /><br />
+        <span class="imageText">Query boxes</span>
+    </div>
+    <br />
+
+    <a name="removing"></a>
+    <h4>Removing a chart</h4>
+    <p>If you’ve made a mistake and you want to remove a chart, simply click the red ‘x’ on the query box.  This will remove it from the 
+        UI and not generate it; this is irreversible, however, so be sure you want to remove it.</p>
+ 
+    <div class="centred">
+        <img src="~/Content/img/howto/HowTo7.png" /><br />
+        <span class="imageText">Chart information box with removal button</span>
+    </div>
+    <br />
+
+    
+    <a name="clearall"></a>
+    <br /><h4>Clearing All Charts</h4>
+    <p>To remove all charts that have been added, click the ‘Clear All’ button; again, this is irreversible, so be sure you want to remove 
+        all of the charts you’ve created.</p>
+    
+    <a name="running"></a>
+    <br /><h4>Running the Charts</h4>    
+    <p>Once you’ve added all the charts you want, the next step is to generate the charts, simply click the ‘Generate Charts’ button to begin the experiment.  The server will attempt to run your queries and return them to the page.  This may take some time depending on a few factors:<br />
+    •	The number of queries
+    •	The number of iterations on each queries
+    •	The number of bins
+    The higher each of these are, the longer they will take – a query with 100,000 iterations will take just over two minutes to complete, so keep it short if you want something quick!<br />
+    While the server is working, you will be shown a loading screen to let you know something is happening:</p>
+ 
+    <div class="centred">
+        <img src="~/Content/img/howto/HowTo8.png" /><br />
+        <span class="imageText">Loading screen</span>
+    </div>
+    <br />
+    <p>Once the queries are done, the charts will automatically fill themselves and you can begin investigating the results:</p>
+
+    <div class="centred">
+        <img src="~/Content/img/howto/HowTo9.png" /><br />
+        <span class="imageText">Chart display</span>
+    </div>
+    <br />
+
+    <a name="homecharting"></a>
+    <br /><h4>Using Home Charting</h4>
+    <p>Other than adding a chart, all other functions are exactly the same as simple charting – please refer to the simple charting section 
+        for help.<br />
+    To start, access the home charting through ‘Charting’ on the navigation bar, and clicking ‘Home Data’.  You will be greeted with a 
+        familiar UI:</p>
+ 
+    <div class="centred">
+        <img src="~/Content/img/howto/HowTo10.png" /><br />
+        <span class="imageText">Home charting UI</span>
+    </div>
+
+    <a name="addinghome"></a>
+    <br /><h4>Adding a Chart</h4>
+    <p>Home charting is a very similar experience to the simple charting, with only a couple of extra items to note during the addition 
+        of a chart; ‘Data List’ parameter is changed for ‘Data Category’ and ‘Timespan’:</p>
+ 
+    <div class="centred">
+        <img src="~/Content/img/howto/HowTo11.png" /><br />
+        <span class="imageText">Add home query dialog box</span>
+        <br /><br />
+        <table>
+            <tr>
+                <td>
+                    <b>Data Category</b>
+                </td>
+                <td>
+                    Used to choose what smart-home metric is to be used in the query.  Can be one of temperature, wind speed, or humidity.
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <b>Timespan</b>
+                </td>
+                <td>
+                    The timespan of the set of data to use, the longer the timespan, the more data is being used.  Can be an hour, day, week, or month.
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <a name="investigating"></a>
+    <br /><h4>Investigating the Results</h4>
+    <p>The X axis shows a set of ranges, this depends on the number of bins that were input, for example the ranges may be ‘0-10’, ’10-20’, 
+        etc., to find the value of each bin, simply mouse over it.<br />
+    The Y axis denotes the number of times that differentially private result was found, to find out exactly how many results fell within 
+        a range, mouse over the bin to inspect it.</p>
+    <div class="centred">
+        <img src="~/Content/img/howto/HowTo12.png" /><br />
+        <span class="imageText">Viewing the value of a bin by mousing over</span>
+    </div>
+    <br />
+    <p>Other than this, interpretation of the chart is up to you, and depends on what you’re experimenting with.  If something doesn’t seem 
+        right you can try generating the charts again, sometimes charts may not display as you would imagine due to the probabilistic 
+        nature of differential privacy.</p>
+
 </div>

@@ -142,6 +142,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Content\css\about.css" />
+    <Content Include="Content\css\howto.css" />
     <Content Include="Content\img\ajax-loader.gif" />
     <Content Include="Content\css\default.css" />
     <Content Include="Content\img\agsquare.png" />
@@ -155,6 +156,18 @@
     <Content Include="Content\img\DPImage2.png" />
     <Content Include="Content\img\dplogo.png" />
     <Content Include="Content\img\favicon.ico" />
+    <Content Include="Content\img\howto\HowTo1.png" />
+    <Content Include="Content\img\howto\HowTo10.png" />
+    <Content Include="Content\img\howto\HowTo11.png" />
+    <Content Include="Content\img\howto\HowTo12.png" />
+    <Content Include="Content\img\howto\HowTo2.png" />
+    <Content Include="Content\img\howto\HowTo3.png" />
+    <Content Include="Content\img\howto\HowTo4.png" />
+    <Content Include="Content\img\howto\HowTo5.png" />
+    <Content Include="Content\img\howto\HowTo6.png" />
+    <Content Include="Content\img\howto\HowTo7.png" />
+    <Content Include="Content\img\howto\HowTo8.png" />
+    <Content Include="Content\img\howto\HowTo9.png" />
     <Content Include="Content\img\IOT.jpg" />
     <Content Include="Content\img\IOT.png" />
     <Content Include="Content\img\logo.png" />
