@@ -62,7 +62,7 @@ namespace DifferentiallyPrivate.Controllers
         }
 
         //About page
-        [Authorize]
+        //[Authorize]
         public ActionResult About()
         {
             ViewBag.Message = "What is Differential Privacy?";
@@ -70,7 +70,7 @@ namespace DifferentiallyPrivate.Controllers
         }
 
         //How To page
-        [Authorize]
+        //[Authorize]
         public ActionResult HowTo()
         {
             ViewBag.Message = "How To";
@@ -78,7 +78,7 @@ namespace DifferentiallyPrivate.Controllers
         }
 
         //Charting page
-        [Authorize]
+        //[Authorize]
         public ActionResult Charting()
         {
             ViewBag.Message = "Charting";

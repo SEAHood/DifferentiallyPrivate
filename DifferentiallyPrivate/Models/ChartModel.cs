@@ -87,8 +87,8 @@ namespace DifferentiallyPrivate.Models
         {
             //Set noise and query type arrays
             noise_types = new[] {
-                new SelectListItem { Value = "laplace", Text = "Laplace" },
-                new SelectListItem { Value = "gaussian", Text = "Gaussian" }
+                new SelectListItem { Value = "laplace", Text = "Laplace" }
+                //new SelectListItem { Value = "gaussian", Text = "Gaussian" }
             };
             query_types = new[] {
                 new SelectListItem { Value = "avg", Text = "Average" },
@@ -99,9 +99,9 @@ namespace DifferentiallyPrivate.Models
             id = _id;
 
             //Defaults
-            iterations_input = "100";
+            iterations_input = "500";
             epsilon_input = "1";
-            binCount_input = "10";
+            binCount_input = "20";
             queryType_input = "avg";
             data_input = "10,20,30,40,50,60,70,80,90,100";
             noiseType_input = "laplace";

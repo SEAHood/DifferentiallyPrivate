@@ -50,14 +50,14 @@
         <div id="nav">
             @if (Request.IsAuthenticated)
             {
-                <a href="~/about">about</a>
-                <a href="~/charting">charting</a>
-                <a href="~/howto">how to</a>
                 <a href="#" onclick="ShowLogout();return false;">logout</a>
             }
             else
             {
-                <a href="~/login">login</a>
+                <a href="~/about">about</a>
+                <a href="~/charting">charting</a>
+                <a href="~/howto">how to</a>
+                <!--<a href="~/login">login</a>-->
             }    
 	        </div>
         </div>

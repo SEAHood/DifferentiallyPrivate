@@ -100,8 +100,8 @@ namespace DifferentiallyPrivate.Models
                 new SelectListItem { Value = "windspeed", Text = "Wind Speed" }
             };
             noise_types = new[] {
-                new SelectListItem { Value = "laplace", Text = "Laplace" },
-                new SelectListItem { Value = "gaussian", Text = "Gaussian" }
+                new SelectListItem { Value = "laplace", Text = "Laplace" }
+                //new SelectListItem { Value = "gaussian", Text = "Gaussian" }
             };
             query_types = new[] {
                 new SelectListItem { Value = "avg", Text = "Average" },
@@ -118,9 +118,9 @@ namespace DifferentiallyPrivate.Models
             id = _id;
 
             //Defaults
-            iterations_input = "1000";
+            iterations_input = "500";
             epsilon_input = "1";
-            binCount_input = "10";
+            binCount_input = "20";
             queryType_input = "avg";
             noiseType_input = "laplace";
             delta_input = "0.0001";

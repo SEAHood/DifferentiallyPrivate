@@ -20,7 +20,7 @@ namespace DifferentiallyPrivate.Controllers
     public class ChartController : Controller
     {
         //GET : Create new MultiChart and return to view
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public ActionResult ChartingSimple()
         {
@@ -31,7 +31,7 @@ namespace DifferentiallyPrivate.Controllers
         }
 
         //POST : Route to appropriate functionality
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         public ActionResult ChartingSimple(MultiChart mc)
         {
@@ -114,7 +114,7 @@ namespace DifferentiallyPrivate.Controllers
         }
 
         //GET : Create new MultiChart and return to view
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public ActionResult ChartingHome()
         {
@@ -125,7 +125,7 @@ namespace DifferentiallyPrivate.Controllers
         }
 
         //POST : Route to appropriate functionality
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         public ActionResult ChartingHome(MultiChart mc)
         {
